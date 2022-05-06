@@ -22,12 +22,24 @@ struct Fare {
 	day_time: String
 }
 
+impl Fare {
+	fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) -> Fare {
+		Fare{price, root_number, start_id, stop_id, day_time}
+	}
+}
+
 struct Timetable {
 	timing: NaiveTime,
 	root: i32,
 	max_price: f64,
 	transport_stop_id: i32,
 	weekends: bool
+}
+
+impl Timetable {
+	fn new(timing: NaiveTime, root: i32, max_price: f64, transport_stop_id: i32, weekends: bool) -> Timetable {
+		Timetable{timing, root, max_price, transport_stop_id, weekends}
+	}
 }
 
 struct Transport {
@@ -38,7 +50,13 @@ struct Transport {
 	entry_date: NaiveDate
 }
 
-struct Transport_stop {
+impl Transport {
+	fn new(root_number: i32, start_id: i32, stop_id: i32, transport_type: String, entry_date: NaiveDate) -> Transport {
+		Transport{root_number, start_id, stop_id, transport_type, entry_date}
+	}
+}
+
+struct TransportStop {
 	id: i32,
 	name: String,
 	address: String,
@@ -46,6 +64,12 @@ struct Transport_stop {
 	install_year: NaiveDate,
 	electricity: bool,
 	rails: bool
+}
+
+impl TransportStop {
+	fn new(id: i32, name: String, address: String, request_stop: bool, install_year: NaiveDate, electricity: bool, rails: bool) -> TransportStop {
+		TransportStop{id, name, address, request_stop, install_year, electricity, rails}
+	}
 }
 
 fn main() -> Result<(), Error> {
