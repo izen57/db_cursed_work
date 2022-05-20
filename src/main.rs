@@ -58,11 +58,11 @@ fn main() -> Result<(), Error> {
 	// wind.make_resizable(true);
 	main_window.end();
 	main_window.show();
-	let mut client = Client::connect("host=localhost user=postgres password=pgadminkoro", NoTls)?;
-	for row in client.query("select start_id from fare limit 10", &[])? {
-		let start_id: i32 = row.get("start_id");
-		println!("{}", start_id);
-	}
+	// let mut client = Client::connect("host=localhost user=postgres password=pgadminkoro", NoTls)?;
+	// for row in client.query("select start_id from fare limit 10", &[])? {
+	// 	let start_id: i32 = row.get("start_id");
+	// 	println!("{}", start_id);
+	// }
 	/* Event handling */
 	app.run().unwrap();
 

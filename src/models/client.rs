@@ -1,6 +1,6 @@
 pub mod roles {
 	use postgres::{Client, Error, NoTls};
-	
+
 	pub enum User {
 		No(),
 		Passenger(Client),
