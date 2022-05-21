@@ -3,21 +3,33 @@ pub mod fare_model {
 	use fltk::dialog::alert;
 	use crate::models::client::*;
 
-	pub struct Fare {
-		price: f64,
+	struct Fare {
+		pub price: f64,
 		root_number: i32,
 		start_id: i32,
 		stop_id: i32,
 		day_time: String
 	}
 
+	impl Default for Fare {
+		fn default() -> Self {
+			Fare {price: 0.0, root_number: 0, start_id: 0, stop_id: 0, day_time: "".to_string()}
+		}
+	}
+
+	pub static mut f: Fare = Fare::default();
+
 	impl Fare {
-		pub fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) -> Fare {
-			Fare{price, root_number, start_id, stop_id, day_time}
+		pub fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) {
+			Fare{price, root_number, start_id, stop_id, day_time};
 		}
 
-		// fn set_price(&mut self, price: f64) {
-		// 	self.price = price;
+		pub fn get_price() -> f64 {
+			Self::price
+		}
+
+		// fn set_price(price: f64) {
+		// 	Self.price = price;
 		// }
 
 		// fn set_root_number(&mut self, root_number: i32) {
@@ -36,7 +48,7 @@ pub mod fare_model {
 		// 	self.day_time = day_time;
 		// }
 
-		pub unsafe fn change_price(root_number: i32, new_price: f64) {
+		pub unsafe fn change_price(&mut self, root_number: i32, new_price: f64) {
 			let checking = roles::U.get_valid().query_one("select * from fare where root_number = $1;", &[&root_number]).unwrap()/*
 				.unwrap_or_else(|error| {
 					alert(10, 10, &format!("Не удалось обновить строку из-за ошибки: {}", error));
@@ -46,7 +58,7 @@ pub mod fare_model {
 				alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
 				return
 			}
-			let f = Fare::new(
+			Fare::new(
 				checking.get("price"),
 				checking.get("root_number"),
 				checking.get("start_id"),
@@ -56,7 +68,7 @@ pub mod fare_model {
 
 			let result = roles::U.get_valid().execute("update fare set price = $1 where root_number = $2;", &[&new_price, &root_number])
 				.unwrap_or_else(|error| {
-					alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", f.price, f.root_number, f.start_id, f.stop_id, f.day_time, error));
+					alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", self.price, self.root_number, self.start_id, self.stop_id, self.day_time, error));
 					0
 				});
 			println!("{}", result);

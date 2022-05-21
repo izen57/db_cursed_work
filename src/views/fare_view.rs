@@ -1,14 +1,14 @@
 pub mod fare_view {
 	use std::error::Error;
 
-use fltk::{
-		button::Button,
-		dialog::alert,
-		frame::Frame,
-		input::Input,
-		prelude::*,
-		window::Window
-	};
+	use fltk::{
+			button::Button,
+			dialog::alert,
+			frame::Frame,
+			input::Input,
+			prelude::*,
+			window::Window
+		};
 	use crate::{controllers::fare_controller::*, models::fare_model::*};
 
 	fn convert_error() {
@@ -54,7 +54,7 @@ use fltk::{
 			});
 			
 			unsafe {
-				fare_model::Fare::change_price(num_conv, price_conv);
+				fare_model::f.change_price(num_conv, price_conv);
 			}
 		});
 		//insert_btn.set_callback(&fare_view::fare_window);
