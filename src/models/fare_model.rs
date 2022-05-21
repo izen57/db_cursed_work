@@ -3,29 +3,23 @@ pub mod fare_model {
 	use fltk::dialog::alert;
 	use crate::models::client::*;
 
-	struct Fare {
-		pub price: f64,
+	pub struct Fare {
+		price: f64,
 		root_number: i32,
 		start_id: i32,
 		stop_id: i32,
 		day_time: String
 	}
 
-	impl Default for Fare {
-		fn default() -> Self {
-			Fare {price: 0.0, root_number: 0, start_id: 0, stop_id: 0, day_time: "".to_string()}
-		}
-	}
-
-	pub static mut f: Fare = Fare::default();
+	pub static mut f: Fare = Fare::new(0.0, 0, 0, 0, String::new());
 
 	impl Fare {
-		pub fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) {
-			Fare{price, root_number, start_id, stop_id, day_time};
+		pub const fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) -> Fare {
+			Fare{price, root_number, start_id, stop_id, day_time}
 		}
 
-		pub fn get_price() -> f64 {
-			Self::price
+		pub fn get_price(&self) -> f64 {
+			self.price
 		}
 
 		// fn set_price(price: f64) {
@@ -58,7 +52,7 @@ pub mod fare_model {
 				alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
 				return
 			}
-			Fare::new(
+			f = Fare::new(
 				checking.get("price"),
 				checking.get("root_number"),
 				checking.get("start_id"),

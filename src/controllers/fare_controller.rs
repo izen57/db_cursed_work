@@ -1,7 +1,25 @@
 pub mod fare_controller {
+	use fltk::dialog::alert;
 	use fltk_table::*;
 	use postgres::{Error, Row};
-	use crate::models::client::*;
+	use crate::models::{fare_model::*, client::*};
+
+	fn convert_error() {
+		alert(10, 10, &format!("Вводимые данные некорректны!"));
+	}
+
+	pub unsafe fn check_price(str_root: String, str_price: String) {
+		let num_conv: i32 = str_root.parse().unwrap_or_else(|_| {
+			convert_error();
+			-1
+		});
+		let price_conv: f64 = str_price.parse().unwrap_or_else(|_| {
+			convert_error();
+			-1.0
+		});
+
+		fare_model::f.change_price(num_conv, price_conv);
+	}
 
 	pub unsafe fn table() -> Result<(), Error> {
 		let request = roles::U.get_valid().query("select * from fare;", &[])?;
