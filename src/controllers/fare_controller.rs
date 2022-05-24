@@ -18,7 +18,7 @@ pub mod fare_controller {
 			-1.0
 		});
 
-		fare_model::f.change_price(num_conv, price_conv);
+		fare_model::F.change_price(num_conv, price_conv);
 	}
 
 	pub unsafe fn table() -> Result<(), Error> {

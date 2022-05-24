@@ -11,7 +11,7 @@ pub mod fare_model {
 		day_time: String
 	}
 
-	pub static mut f: Fare = Fare::new(0.0, 0, 0, 0, String::new());
+	pub static mut F: Fare = Fare::new(0.0, 0, 0, 0, String::new());
 
 	impl Fare {
 		pub const fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) -> Fare {
@@ -52,7 +52,7 @@ pub mod fare_model {
 				alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
 				return
 			}
-			f = Fare::new(
+			F = Fare::new(
 				checking.get("price"),
 				checking.get("root_number"),
 				checking.get("start_id"),
