@@ -8,6 +8,14 @@ pub mod fare_controller {
 		alert(10, 10, &format!("Вводимые данные некорректны!"));
 	}
 
+	pub unsafe fn check_root(str_root: String) -> i32{
+		let num_conv: i32 = str_root.parse().unwrap_or_else(|_| {
+			convert_error();
+			-1
+		});
+		num_conv
+	}
+
 	pub unsafe fn check_price(str_root: String, str_price: String) {
 		let num_conv: i32 = str_root.parse().unwrap_or_else(|_| {
 			convert_error();
@@ -18,11 +26,11 @@ pub mod fare_controller {
 			-1.0
 		});
 
-		fare_model::F.change_price(num_conv, price_conv);
+		fare_model::Fare::change_price(num_conv, price_conv);
 	}
 
-	pub unsafe fn table() -> Result<(), Error> {
-		let request = roles::U.get_valid().query("select * from fare;", &[])?;
+	pub unsafe fn table() -> SmartTable {
+		let request = roles::U.get_valid().query("select * from fare;", &[]).unwrap_or_default();
 		let row_count = request.len();
 
 		// for row in request {
@@ -61,6 +69,6 @@ pub mod fare_controller {
 				}
 			}
 		}
-		Ok(())
+		all_table
 	}
 }

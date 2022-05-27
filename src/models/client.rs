@@ -10,7 +10,7 @@ pub mod roles {
 
 	impl User {
 		pub fn set_passenger() -> Self {
-			Self::Passenger(Client::connect("host=localhost user=postgres password=pgadminkoro", NoTls).expect("Что-то пошло не так..."))
+			Self::Passenger(Client::connect("host=localhost user=postgres password=pgadminkoro dbname=test", NoTls).expect("Что-то пошло не так..."))
 		}
 
 		pub fn set_manager() -> Self {
