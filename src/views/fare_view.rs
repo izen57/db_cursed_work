@@ -1,10 +1,8 @@
 pub mod fare_view {
-	use std::error::Error;
-
 	use fltk::{
 		button::Button,
 		frame::Frame,
-		input::Input,
+		input::{Input, IntInput},
 		prelude::*,
 		window::Window
 	};
@@ -19,33 +17,49 @@ pub mod fare_view {
 		unsafe {
 			let table = fare_controller::table();
 		}
-		let ins_nmb_lbl = Frame::default()
+		let nmb_lbl = Frame::default()
 			.with_pos(790, 10)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
-		let insert_nmb = Input::default()
+		let nmb_input = IntInput::default()
 			.with_pos(890, 10)
 			.with_size(60, 30);
-		let ins_daytime_lbl = Frame::default()
-			.with_pos(980, 10)
+		let daytime_lbl = Frame::default()
+			.with_pos(990, 10)
 			.with_size(60, 30)
 			.with_label("Новое время суток:");
-		let insert_daytime = Input::default()
-			.with_pos(1070, 10)
+		let daytime_input = Input::default()
+			.with_pos(1090, 10)
 			.with_size(60, 30);
-		let mut daytime_for_change = Button::default()
-			.with_pos(1140, 10)
+		let mut daytime_btn = Button::default()
+			.with_pos(1160, 10)
 			.with_size(180, 30)
 			.with_label("Сменить время суток");
-		daytime_for_change.set_callback(move |table|
-			unsafe {
-				let root = fare_controller::check_root(insert_nmb.value());
-				fare_model::Fare::change_daytime(root, insert_daytime.value())
-			}
-		);
+		let start_lbl = Frame::default()
+			.with_pos(1000, 45)
+			.with_size(90, 30)
+			.with_label("Новый ид-р нач. остановки:");
+		let start_input = IntInput::default()
+			.with_pos(1145, 45)
+			.with_size(60, 30);
+		let mut start_btn = Button::default()
+			.with_pos(1215, 45)
+			.with_size(180, 30)
+			.with_label("Сменить нач. остановку");
 
-		w.redraw();
+		let root = nmb_input.value().parse().unwrap();
+		unsafe {
+			daytime_btn.set_callback(move |_|
+				fare_model::Fare::change_daytime(root, daytime_input.value())
+			);
+
+			start_btn.set_callback(move |_|
+				fare_model::Fare::change_start(root, start_input.value().parse().unwrap())
+			);
+		}
+
 		fare_window.end();
+		fare_window.redraw();
 		fare_window.show();
 	}
 }

@@ -8,8 +8,8 @@ pub mod fare_controller {
 		alert(10, 10, &format!("Вводимые данные некорректны!"));
 	}
 
-	pub unsafe fn check_root(str_root: String) -> i32{
-		let num_conv: i32 = str_root.parse().unwrap_or_else(|_| {
+	pub unsafe fn check_i32(str_value: String) -> i32 {
+		let num_conv: i32 = str_value.parse().unwrap_or_else(|_| {
 			convert_error();
 			-1
 		});
@@ -17,16 +17,12 @@ pub mod fare_controller {
 	}
 
 	pub unsafe fn check_price(str_root: String, str_price: String) {
-		let num_conv: i32 = str_root.parse().unwrap_or_else(|_| {
-			convert_error();
-			-1
-		});
 		let price_conv: f64 = str_price.parse().unwrap_or_else(|_| {
 			convert_error();
 			-1.0
 		});
 
-		fare_model::Fare::change_price(num_conv, price_conv);
+		//fare_model::Fare::change_price(num_conv, price_conv);
 	}
 
 	pub unsafe fn table() -> SmartTable {

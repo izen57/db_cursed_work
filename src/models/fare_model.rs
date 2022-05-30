@@ -44,14 +44,15 @@ pub mod fare_model {
 		// 	F.day_time = day_time;
 		// }
 
+		unsafe fn get_checking_root(root_number: i32) -> Row {
+			roles::U.get_valid().query_one("select * from fare where root_number = $1;", &[&root_number]).unwrap()
+		}
+
 		pub unsafe fn change_daytime(root_number: i32, new_daytime: String) {
-			let checking = roles::U.get_valid().query_one("select * from fare where root_number = $1;", &[&root_number]).unwrap()/* .unwrap_or_else(|error| {
-					alert(10, 10, &format!("Не удалось обновить строку из-за ошибки: {}", error));
-					Row{statement: Statement, body: 0, ranges: 0}
-			})*/;
+			let checking = Fare::get_checking_root(root_number);
 			if checking.is_empty() {
 				alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
-				return
+				return;
 			}
 			F = Fare::new(
 				checking.get("price"),
@@ -62,6 +63,28 @@ pub mod fare_model {
 			);
 
 			let result = roles::U.get_valid().execute("update fare set day_time = $1 where root_number = $2;", &[&new_daytime, &root_number])
+				.unwrap_or_else(|error| {
+					alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+					0
+				});
+			println!("{}", result);
+		}
+
+		pub unsafe fn change_start(root_number: i32, new_start: i32) {
+			let checking = Fare::get_checking_root(root_number);
+			if checking.is_empty() {
+				alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+				return;
+			}
+			F = Fare::new(
+				checking.get("price"),
+				checking.get("root_number"),
+				checking.get("start_id"),
+				checking.get("stop_id"),
+				checking.get("day_time")
+			);
+
+			let result = roles::U.get_valid().execute("update fare set start_id = $1 where root_number = $2;", &[&new_start, &root_number])
 				.unwrap_or_else(|error| {
 					alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 					0
