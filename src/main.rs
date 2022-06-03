@@ -26,11 +26,11 @@ fn main() -> Result<(), Error> {
 		roles::U = roles::User::set_passenger();
 	}
 
-	let mut insert_btn = Button::default()
+	let mut fare = Button::default()
 		.with_size(180, 50)
 		.with_pos(100, 80)
 		.with_label("Список тарифов");
-	insert_btn.set_callback(&fare_view::fare_window);
+	fare.set_callback(&fare_view::fare_window);
 
 	main_window.end();
 	main_window.show();

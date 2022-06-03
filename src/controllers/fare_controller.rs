@@ -1,5 +1,5 @@
 pub mod fare_controller {
-	use fltk::dialog::alert;
+	use fltk::dialog::{alert, message};
 	use fltk_table::*;
 	use postgres::{Error, Row};
 	use crate::models::{fare_model::*, client::*};
@@ -21,21 +21,28 @@ pub mod fare_controller {
 			convert_error();
 			-1.0
 		});
+	}
 
-		//fare_model::Fare::change_price(num_conv, price_conv);
+	pub unsafe fn prepare_row_del(price: String) {
+		fare_model::remove_row(price.parse().unwrap());
+	}
+
+	pub unsafe fn prepare_row_crt(price: String, root_number: String, start_id: String, stop_id: String, day_time: String) {
+		fare_model::create_row(
+			price.parse().unwrap(),
+			root_number.parse().unwrap(),
+			start_id.parse().unwrap(),
+			stop_id.parse().unwrap(),
+			day_time
+		);
 	}
 
 	pub unsafe fn table() -> SmartTable {
-		let request = roles::U.get_valid().query("select * from fare;", &[]).unwrap_or_default();
+		let request = roles::U.get_valid().query("select * from fare", &[]).unwrap_or_default();
 		let row_count = request.len();
 
-		// for row in request {
-		// 	let start_id: i32 = row.get("start_id");
-		// 	println!("{}", start_id);
-		// }
-
 		let mut all_table = SmartTable::default()
-			.with_pos(10, 10)
+			.with_pos(5, 5)
 			.with_size(750, 590)
 			.with_opts(TableOpts{
 				rows: row_count as i32,
@@ -65,6 +72,7 @@ pub mod fare_controller {
 				}
 			}
 		}
+
 		all_table
 	}
 }
