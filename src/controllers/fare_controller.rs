@@ -1,11 +1,11 @@
 pub mod fare_controller {
-	use fltk::dialog::{alert, message};
+	use fltk::dialog::{alert_default, message};
 	use fltk_table::*;
 	use postgres::{Error, Row};
 	use crate::models::{fare_model::*, client::*};
 
 	fn convert_error() {
-		alert(10, 10, &format!("Вводимые данные некорректны!"));
+		alert_default("Вводимые данные некорректны!");
 	}
 
 	pub unsafe fn check_i32(str_value: String) -> i32 {
@@ -28,6 +28,10 @@ pub mod fare_controller {
 	}
 
 	pub unsafe fn prepare_row_crt(price: String, root_number: String, start_id: String, stop_id: String, day_time: String) {
+		if price.is_empty() {
+			alert_default("Заполните все поля.");
+			return;
+		}
 		fare_model::create_row(
 			price.parse().unwrap(),
 			root_number.parse().unwrap(),

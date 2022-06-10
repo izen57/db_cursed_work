@@ -2,6 +2,7 @@ pub mod fare_model {
 	use fltk::prelude::WidgetExt;
 	use postgres::{Error, Row};
 	use fltk::dialog::{alert, message};
+
 	use crate::models::client::*;
 	use crate::controllers::fare_controller::*;
 
@@ -23,26 +24,6 @@ pub mod fare_model {
 		pub fn get_price(&self) -> f64 {
 			self.price
 		}
-
-		// fn set_price(price: f64) {
-		// 	F.price = price;
-		// }
-
-		// fn set_root_number(&mut F, root_number: i32) {
-		// 	F.root_number = root_number;
-		// }
-
-		// fn set_start_id(&mut F, start_id: i32) {
-		// 	F.start_id = start_id;
-		// }
-
-		// fn set_stop_id(&mut F, stop_id: i32) {
-		// 	F.stop_id = stop_id;
-		// }
-
-		// fn set_day_time(&mut F, day_time: String) {
-		// 	F.day_time = day_time;
-		// }
 	}
 
 	unsafe fn get_checking_root(root_number: i32) -> Vec<Row> {

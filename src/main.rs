@@ -1,4 +1,3 @@
-use chrono::{NaiveDate, NaiveTime};
 use fltk::{
 	app::App,
 	button::Button,
@@ -11,7 +10,7 @@ use fltk::{
 use fltk_table::*;
 use postgres::{Client, Error, NoTls};
 
-use work::views::fare_view::*;
+use work::views::{fare_view::*, transport_view::*};
 use work::models::client::*;
 
 const WIDTH: i32 = 400;
@@ -31,6 +30,12 @@ fn main() -> Result<(), Error> {
 		.with_pos(100, 80)
 		.with_label("Список тарифов");
 	fare.set_callback(&fare_view::fare_window);
+
+	let mut transport = Button::default()
+		.with_size(180, 50)
+		.with_pos(100, 135)
+		.with_label("Список транспорта");
+	transport.set_callback(&transport_view::transport_window);
 
 	main_window.end();
 	main_window.show();
