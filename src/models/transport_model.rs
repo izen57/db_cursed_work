@@ -1,7 +1,7 @@
 pub mod transport_model {
-	use chrono::{Date, NaiveDate, prelude::*, Utc};
-	use postgres::{Error, Row};
-	use fltk::dialog::{alert_default, message};
+	use chrono::{ Date, NaiveDate, prelude::*, Utc };
+	use postgres::{ Error, Row };
+	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client::*;
 

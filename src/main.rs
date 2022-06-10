@@ -1,16 +1,16 @@
 use fltk::{
 	app::App,
 	button::Button,
-	enums::{Color, FrameType::BorderFrame},
+	enums::{ Color, FrameType::BorderFrame },
 	group::Group,
 	input::Input,
 	prelude::*,
 	window::Window
 };
 use fltk_table::*;
-use postgres::{Client, Error, NoTls};
+use postgres::{ Client, Error, NoTls };
 
-use work::views::{fare_view::*, transport_view::*};
+use work::views::{ fare_view::*, transport_view::* };
 use work::models::client::*;
 
 const WIDTH: i32 = 400;
@@ -21,9 +21,7 @@ fn main() -> Result<(), Error> {
 	let mut main_window = Window::default()
 		.with_size(WIDTH, HEIGHT)
 		.center_screen();
-	unsafe {
-		roles::U = roles::User::set_passenger();
-	}
+	unsafe { roles::U = roles::User::set_passenger(); }
 
 	let mut fare = Button::default()
 		.with_size(180, 50)

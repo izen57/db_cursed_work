@@ -7,7 +7,7 @@ pub mod fare_view {
 		prelude::*,
 		window::Window
 	};
-	use crate::{controllers::fare_controller::*, models::fare_model::*};
+	use crate::{ controllers::fare_controller::*, models::fare_model::* };
 
 	pub fn fare_window(w: &mut impl WidgetExt) {
 		let mut fare_window = Window::default()

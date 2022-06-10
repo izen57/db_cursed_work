@@ -1,7 +1,7 @@
 pub mod fare_model {
 	use fltk::prelude::WidgetExt;
-	use postgres::{Error, Row};
-	use fltk::dialog::{alert_default, message};
+	use postgres::{ Error, Row };
+	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client::*;
 	use crate::controllers::fare_controller::*;
@@ -18,7 +18,7 @@ pub mod fare_model {
 
 	impl Fare {
 		pub const fn new(price: f64, root_number: i32, start_id: i32, stop_id: i32, day_time: String) -> Fare {
-			Fare{price, root_number, start_id, stop_id, day_time}
+			Fare{ price, root_number, start_id, stop_id, day_time }
 		}
 
 		pub fn get_price(&self) -> f64 {
@@ -82,7 +82,7 @@ pub mod fare_model {
 			println!("{}", result);
 	}
 
-		pub unsafe fn change_stop(root_number: i32, new_stop: i32) {
+	pub unsafe fn change_stop(root_number: i32, new_stop: i32) {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {

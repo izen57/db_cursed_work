@@ -1,9 +1,9 @@
 pub mod transport_controller {
-	use fltk::dialog::{alert, message, alert_default};
+	use fltk::dialog::{ alert, message, alert_default };
 	use fltk_table::*;
 	use chrono::NaiveDate;
 
-	use crate::models::{transport_model::*, client::*, fare_model::*};
+	use crate::models::{ transport_model::*, client::*, fare_model::* };
 
 	pub unsafe fn prepare_row_del(root_number: String) {
 		transport_model::remove_row(root_number.parse().unwrap());

@@ -3,11 +3,11 @@ pub mod transport_view {
 		button::Button,
 		enums::Align,
 		frame::Frame,
-		input::{Input, IntInput, FloatInput},
+		input::{ Input, IntInput, FloatInput },
 		prelude::*,
 		window::Window
 	};
-	use crate::{controllers::transport_controller::*, models::transport_model::*};
+	use crate::{ controllers::transport_controller::*, models::transport_model::* };
 
 	pub fn transport_window(w: &mut impl WidgetExt) {
 		let mut transport_window = Window::default()
