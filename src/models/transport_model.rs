@@ -1,7 +1,7 @@
 pub mod transport_model {
 	use chrono::{Date, NaiveDate, prelude::*, Utc};
 	use postgres::{Error, Row};
-	use fltk::dialog::{alert, message};
+	use fltk::dialog::{alert_default, message};
 
 	use crate::models::client::*;
 
@@ -29,7 +29,7 @@ pub mod transport_model {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {
-			alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -45,7 +45,7 @@ pub mod transport_model {
 
 		let result = roles::U.get_valid().execute("update transport set entry_date = $1 where root_number = $2", &[&new_date, &root_number])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			});
 		println!("{}", result);
@@ -55,7 +55,7 @@ pub mod transport_model {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {
-			alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -71,7 +71,7 @@ pub mod transport_model {
 
 		let result = roles::U.get_valid().execute("update transport set start_id = $1 where root_number = $2", &[&new_start, &root_number])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			});
 			println!("{}", result);
@@ -81,7 +81,7 @@ pub mod transport_model {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {
-			alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -97,7 +97,7 @@ pub mod transport_model {
 
 		let result = roles::U.get_valid().execute("update transport set stop_id = $1 where root_number = $2", &[&new_stop, &root_number])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			});
 		println!("{}", result);
@@ -107,7 +107,7 @@ pub mod transport_model {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {
-			alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -123,7 +123,7 @@ pub mod transport_model {
 
 		let mut result = roles::U.get_valid().execute("update transport set transport_type = $1 where root_number = $2", &[&new_type, &root_number])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			});
 		println!("{}", result);
@@ -139,7 +139,7 @@ pub mod transport_model {
 		let checking = get_checking_root(root_number);
 		let result: &Row;
 		if checking.is_empty() {
-			alert(10, 10, &format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -150,7 +150,7 @@ pub mod transport_model {
 			&[&root_number, &start_id, &stop_id, &transport_type, &day_time]
 		)
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			}
 		);
@@ -159,7 +159,7 @@ pub mod transport_model {
 			"insert into tr_trst values ($1, $2)",
 			&[&root_number, &start_id])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			}
 		);
@@ -167,7 +167,7 @@ pub mod transport_model {
 			"insert into tr_trst values ($1, $2)",
 			&[&root_number, &stop_id])
 			.unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
+				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", TR.root_number, TR.start_id, TR.stop_id, TR.transport_type, TR.entry_date, error));
 				0
 			}
 		);
@@ -178,7 +178,7 @@ pub mod transport_model {
 	pub unsafe fn add_stops(root_number: i32, stoplist: String) {
 		let v: Vec<&str> = stoplist.split(",").collect();
 		if v.is_empty() || v.len() != 2 {
-			alert(10, 10, &format!("Не удалось разделить входящую строку"));
+			alert_default(&format!("Не удалось разделить входящую строку"));
 			return;
 		}
 
@@ -187,7 +187,7 @@ pub mod transport_model {
 				"insert into tr_trst values ($1, $2) on conflict do nothing",
 				&[&root_number, &elem]
 			).unwrap_or_else(|error| {
-				alert(10, 10, &format!("Не удалось разделить входящую строку"));
+				alert_default(&format!("Не удалось разделить входящую строку"));
 				0
 			});
 		}

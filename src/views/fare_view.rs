@@ -91,12 +91,12 @@ pub mod fare_view {
 			.with_label("Сменить цену");
 
 		let mut add_btn = Button::default()
-			.with_size(20, 20)
 			.with_pos(760, 575)
+			.with_size(20, 20)
 			.with_label("@+");
 		let mut rmv_btn = Button::default()
-			.with_size(20, 20)
 			.with_pos(760, 555)
+			.with_size(20, 20)
 			.with_label("@1+");
 
 		unsafe {
@@ -205,8 +205,8 @@ pub mod fare_view {
 			.with_size(60, 30);
 
 		let mut enter_btn = Button::default()
-			.with_size(30, 30)
 			.with_pos(270, 370)
+			.with_size(30, 30)
 			.with_label("@filesaveas");
 
 		unsafe {
