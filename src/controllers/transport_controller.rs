@@ -3,19 +3,19 @@ pub mod transport_controller {
 	use fltk_table::*;
 	use chrono::NaiveDate;
 
-	use crate::models::{ transport_model::*, client::*, fare_model::* };
+	use crate::models::{ transport_model::*, client::* };
 
 	pub unsafe fn prepare_row_del(root_number: String) {
 		transport_model::remove_row(root_number.parse().unwrap());
 	}
 
-	pub unsafe fn prepare_row_crt(root_number: String, start_id: String, stop_id: String, transport_type: String, entry_date: String, stoplist: String) {
+	pub unsafe fn prepare_row_crt(root_number: String, price: String, start_id: String, stop_id: String, transport_type: String, entry_date: String, stoplist: String) {
 		if root_number.is_empty() {
 			alert_default("Введите номер маршрута.");
 			return;
 		} else if !root_number.is_empty() && !stoplist.is_empty() {
 			transport_model::add_stops(root_number.parse().unwrap(), stoplist);
-		} else if !root_number.is_empty() && (start_id.is_empty() || stop_id.is_empty() || transport_type.is_empty() || entry_date.is_empty()) {
+		} else if !root_number.is_empty() && (price.is_empty() || start_id.is_empty() || stop_id.is_empty() || transport_type.is_empty() || entry_date.is_empty()) {
 			alert_default("Заполните нужные поля.");
 			return;
 		}
@@ -31,6 +31,7 @@ pub mod transport_controller {
 		};
 		transport_model::create_row(
 			root_number.parse().unwrap(),
+			price.parse().unwrap(),
 			start_id.parse().unwrap(),
 			stop_id.parse().unwrap(),
 			transport_type,
@@ -67,9 +68,6 @@ pub mod transport_controller {
 				} else if col_type == "text" {
 					let value: &str = row.get(col_index);
 					all_table.set_cell_value(row_index as i32, col_index as i32, &value);
-				} else if col_type == "float8" {
-					let value: f64 = row.get(col_index);
-					all_table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
 				} else if col_type == "date" {
 					let value: NaiveDate = row.get(col_index);
 					all_table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());

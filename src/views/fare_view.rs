@@ -31,7 +31,7 @@ pub mod fare_view {
 		let mut daytime_btn = Button::default()
 			.with_pos(1215, 10)
 			.with_size(180, 30)
-			.with_label("Сменить время суток");
+			.with_label("Поменять");
 
 		let nmb_lbl2 = Frame::default()
 			.with_pos(790, 45)
@@ -50,7 +50,7 @@ pub mod fare_view {
 		let mut start_btn = Button::default()
 			.with_pos(1215, 45)
 			.with_size(180, 30)
-			.with_label("Сменить нач. остановку");
+			.with_label("Поменять");
 
 		let nmb_lbl3 = Frame::default()
 			.with_pos(790, 80)
@@ -69,7 +69,7 @@ pub mod fare_view {
 		let mut stop_btn = Button::default()
 			.with_pos(1215, 80)
 			.with_size(180, 30)
-			.with_label("Сменить кон. остановку");
+			.with_label("Поменять");
 
 		let nmb_lbl4 = Frame::default()
 			.with_pos(790, 115)
@@ -88,7 +88,7 @@ pub mod fare_view {
 		let mut price_btn = Button::default()
 			.with_pos(1215, 115)
 			.with_size(180, 30)
-			.with_label("Сменить цену");
+			.with_label("Поменять");
 
 		let mut add_btn = Button::default()
 			.with_pos(760, 575)

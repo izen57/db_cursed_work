@@ -24,14 +24,14 @@ pub mod transport_view {
 		let type_lbl = Frame::default()
 			.with_pos(990, 10)
 			.with_size(60, 30)
-			.with_label("Новый тип транспорта");
+			.with_label("Новый тип транспорта:");
 		let type_input = Input::default()
 			.with_pos(1145, 10)
 			.with_size(60, 30);
 		let mut type_btn = Button::default()
 			.with_pos(1215, 10)
 			.with_size(180, 30)
-			.with_label("Сменить тип");
+			.with_label("Поменять");
 
 		let nmb_lbl2 = Frame::default()
 			.with_pos(790, 45)
@@ -50,7 +50,7 @@ pub mod transport_view {
 		let mut start_btn = Button::default()
 			.with_pos(1215, 45)
 			.with_size(180, 30)
-			.with_label("Сменить нач. остановку");
+			.with_label("Поменять");
 
 		let nmb_lbl3 = Frame::default()
 			.with_pos(790, 80)
@@ -69,7 +69,7 @@ pub mod transport_view {
 		let mut stop_btn = Button::default()
 			.with_pos(1215, 80)
 			.with_size(180, 30)
-			.with_label("Сменить кон. остановку");
+			.with_label("Поменять");
 
 		let nmb_lbl4 = Frame::default()
 			.with_pos(790, 115)
@@ -81,14 +81,14 @@ pub mod transport_view {
 		let entry_lbl = Frame::default()
 			.with_pos(1000, 115)
 			.with_size(90, 30)
-			.with_label("Новая дата введения");
+			.with_label("Новая дата введения:");
 		let entry_input = Input::default()
 			.with_pos(1145, 115)
 			.with_size(60, 30);
 		let mut entry_btn = Button::default()
 			.with_pos(1215, 115)
 			.with_size(180, 30)
-			.with_label("Сменить дату");
+			.with_label("Поменять");
 
 		let mut add_btn = Button::default()
 			.with_pos(760, 575)
@@ -115,7 +115,7 @@ pub mod transport_view {
 			);
 
 			entry_btn.set_callback(move |_|
-				transport_model::change_date(nmb_input4.value().parse().unwrap(), entry_input.value().parse().unwrap())
+				transport_model::change_date(nmb_input4.value().parse().unwrap(), entry_input.value())
 			);
 
 			add_btn.set_callback(&add_window);
@@ -139,44 +139,52 @@ pub mod transport_view {
 			.with_pos(180, 10)
 			.with_size(60, 30);
 
-		let entry_lbl = Frame::default()
+		let price_lbl = Frame::default()
 			.with_pos(45, 45)
 			.with_size(90, 30)
-			.with_label("Дата введения:");
-		let entry_input = Input::default()
+			.with_label("Цена:");
+		let price_input = FloatInput::default()
 			.with_pos(180, 45)
 			.with_size(60, 30);
 
-		let start_lbl = Frame::default()
+		let entry_lbl = Frame::default()
 			.with_pos(45, 80)
 			.with_size(90, 30)
-			.with_label("Ид-р нач. остановки:");
-		let start_input = IntInput::default()
+			.with_label("Дата введения:");
+		let entry_input = Input::default()
 			.with_pos(180, 80)
 			.with_size(60, 30);
 
-		let stop_lbl = Frame::default()
+		let start_lbl = Frame::default()
 			.with_pos(45, 115)
+			.with_size(90, 30)
+			.with_label("Ид-р нач. остановки:");
+		let start_input = IntInput::default()
+			.with_pos(180, 115)
+			.with_size(60, 30);
+
+		let stop_lbl = Frame::default()
+			.with_pos(45, 150)
 			.with_size(90, 30)
 			.with_label("Ид-р кон. остановки:");
 		let stop_input = IntInput::default()
-			.with_pos(180, 115)
+			.with_pos(180, 150)
 			.with_size(60, 30);
 		
 		let type_lbl = Frame::default()
-			.with_pos(45, 150)
+			.with_pos(45, 185)
 			.with_size(90, 30)
 			.with_label("Тип:");
 		let type_input = Input::default()
-			.with_pos(180, 150)
+			.with_pos(180, 185)
 			.with_size(60, 30);
 
 		let stops_lbl = Frame::default()
-			.with_pos(90, 185)
+			.with_pos(90, 220)
 			.with_size(120, 30)
 			.with_label("Введите через запятую все остановки, на\nкоторых останавливается данный маршрут:");
 		let stops_input = Input::default()
-			.with_pos(90, 220)
+			.with_pos(90, 255)
 			.with_size(120, 30);
 
 		let mut enter_btn = Button::default()
@@ -188,6 +196,7 @@ pub mod transport_view {
 			enter_btn.set_callback(move |_|
 				transport_controller::prepare_row_crt(
 					entry_input.value(),
+					price_input.value(),
 					nmb_input.value(),
 					start_input.value(),
 					stop_input.value(),

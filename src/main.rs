@@ -10,7 +10,7 @@ use fltk::{
 use fltk_table::*;
 use postgres::{ Client, Error, NoTls };
 
-use work::views::{ fare_view::*, transport_view::* };
+use work::views::{ fare_view::*, transport_view::*, transportstop_view::* };
 use work::models::client::*;
 
 const WIDTH: i32 = 400;
@@ -34,6 +34,12 @@ fn main() -> Result<(), Error> {
 		.with_pos(100, 135)
 		.with_label("Список транспорта");
 	transport.set_callback(&transport_view::transport_window);
+
+	let mut transport_stops = Button::default()
+		.with_size(180, 50)
+		.with_pos(100, 190)
+		.with_label("Список остановок");
+	transport_stops.set_callback(&transportstop_view::transportstop_window);
 
 	main_window.end();
 	main_window.show();
