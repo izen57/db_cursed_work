@@ -193,12 +193,13 @@ pub mod transportstop_model {
 		println!("{}", result);
 	}
 
-	pub unsafe fn remove_row(id: i32, and_stop: bool) {
-		println!("{}", roles::U.get_valid().execute("delete from tr_trst where root_number = $1", &[&id]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from transport where root_number = $1", &[&id]).unwrap());
-		if and_stop {
-			println!("{}", roles::U.get_valid().execute("update transport set transport_stop_id = null where root_number = $1", &[&id]).unwrap());
-		}
+	pub unsafe fn remove_row(id: i32/*, and_stop: bool*/) {
+		println!("{}", roles::U.get_valid().execute("update tr_trst set transport_stop_id = null where transport_stop_id = $1", &[&id]).unwrap());
+		println!("{}", roles::U.get_valid().execute("delete from transport_stop where id = $1", &[&id]).unwrap());
+		println!("{}", roles::U.get_valid().execute("delete from trst_ti where trst_id = $1", &[&id]).unwrap());
+		// if and_stop {
+		// 	println!("{}", roles::U.get_valid().execute("update transport set transport_stop_id = null where root_number = $1", &[&id]).unwrap());
+		// }
 		message(10, 10, "Запись удалена!");
 	}
 
@@ -210,26 +211,26 @@ pub mod transportstop_model {
 		}
 
 		roles::U.get_valid().execute(
-			"insert into transport values ($1, $2, $3, $4, $5, $6, $7)",
+			"insert into transport_stop values ($1, $2, $3, $4, $5, $6, $7)",
 			&[&id, &name, &address, &request_stop, &install_year, &electricity, &rails]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		// roles::U.get_valid().execute(
-		// 	"insert into trst_ti values ($1, $2)",
-		// 	&[&root_number, &timing]
-		// ).unwrap_or_else(|error| {
-		// 	alert_default(&format!("Не удалось обновить строку с параметрами из-за ошибки: {}", error));
-		// 	0
-		// });
+		roles::U.get_valid().execute(
+			"insert into trst_ti (trst_id) values ($1)",
+			&[&id]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами из-за ошибки: {}", error));
+			0
+		});
 
 		message(10, 10, "Запись добавлена!");
 	}
 
 	pub unsafe fn add_roots(root_number: i32, roots: String) {
 		let v: Vec<&str> = roots.split(",").collect();
-		if v.is_empty() || v.len() != 2 {
+		if v.is_empty() {
 			alert_default(&format!("Не удалось разделить входящую строку"));
 			return;
 		}

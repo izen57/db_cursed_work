@@ -1,12 +1,12 @@
 pub mod transportstop_controller {
 	use fltk::dialog::{ alert, message, alert_default };
 	use fltk_table::*;
-	use chrono::NaiveTime;
+	use chrono::NaiveDate;
 
 	use crate::models::{ transportstop_model::*, client::* };
 
-	pub unsafe fn prepare_row_del(root_number: String, and_stop: bool) {
-		transportstop_model::remove_row(root_number.parse().unwrap(), and_stop);
+	pub unsafe fn prepare_row_del(root_number: String/*, and_stop: bool*/) {
+		transportstop_model::remove_row(root_number.parse().unwrap()/*, and_stop*/);
 	}
 
 	pub unsafe fn prepare_row_crt(id: String, root_numbers: String, name: String, address: String, request_stop: String, install_year: String, electricity: String, rails: String) {
@@ -23,15 +23,15 @@ pub mod transportstop_controller {
 			return;
 		}
 
-		// let res = NaiveTime::parse_from_str(&timing, "%Y-%m-%d");
-		// let resdate: NaiveTime;
-		// match res {
-		// 	Ok(success) => resdate = success,
-		// 	Err(_) => {
-		// 		alert_default("Не удалось преобразовать год установки.");
-		// 		return
-		// 	}
-		// };
+		let res = NaiveDate::parse_from_str(&install_year, "%Y");
+		let resdate: NaiveDate;
+		match res {
+			Ok(success) => resdate = success,
+			Err(_) => {
+				alert_default("Не удалось преобразовать год установки.");
+				return
+			}
+		};
 		transportstop_model::create_row(
 			id.parse().unwrap(),
 			// timing.parse().unwrap(),
@@ -45,7 +45,7 @@ pub mod transportstop_controller {
 	}
 
 	pub unsafe fn table() -> SmartTable {
-		let request = roles::U.get_valid().query("select * from transport", &[]).unwrap_or_default();
+		let request = roles::U.get_valid().query("select * from transport_stop", &[]).unwrap_or_default();
 		let row_count = request.len();
 
 		let mut all_table = SmartTable::default()
@@ -63,7 +63,7 @@ pub mod transportstop_controller {
 		all_table.set_col_header_value(3, "По требованию");
 		all_table.set_col_header_value(4, "Год установки");
 		all_table.set_col_header_value(5, "Контактный провод");
-		all_table.set_col_header_value(4, "Рельсы");
+		all_table.set_col_header_value(6, "Рельсы");
 
 		for (row_index, row) in request.iter().enumerate() {
 			for (col_index, col) in row.columns().iter().enumerate() {
@@ -77,9 +77,9 @@ pub mod transportstop_controller {
 					all_table.set_cell_value(row_index as i32, col_index as i32, &value);
 				} else if col_type == "bool" {
 					let value: bool = row.get(col_index);
-					all_table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-				} else if col_type == "time" {
-					let value: NaiveTime = row.get(col_index);
+					all_table.set_cell_value(row_index as i32, col_index as i32, if value { "есть" } else { "нет" });
+				} else if col_type == "date" {
+					let value: NaiveDate = row.get(col_index);
 					all_table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
 				}
 			}

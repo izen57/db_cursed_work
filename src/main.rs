@@ -10,7 +10,7 @@ use fltk::{
 use fltk_table::*;
 use postgres::{ Client, Error, NoTls };
 
-use work::views::{ fare_view::*, transport_view::*, transportstop_view::* };
+use work::views::{ fare_view::*, transport_view::*, transportstop_view::*, timetable_view::* };
 use work::models::client::*;
 
 const WIDTH: i32 = 400;
@@ -40,6 +40,12 @@ fn main() -> Result<(), Error> {
 		.with_pos(100, 190)
 		.with_label("Список остановок");
 	transport_stops.set_callback(&transportstop_view::transportstop_window);
+
+	let mut timetable = Button::default()
+		.with_size(180, 50)
+		.with_pos(100, 245)
+		.with_label("Расписание");
+	timetable.set_callback(&timetable_view::timetable_window);
 
 	main_window.end();
 	main_window.show();

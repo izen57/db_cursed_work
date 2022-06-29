@@ -286,13 +286,13 @@ pub mod transportstop_view {
 			.with_pos(180, 10)
 			.with_size(60, 30);
 
-		let and_stops_lbl = Frame::default()
-			.with_pos(45, 45)
-			.with_size(90, 30)
-			.with_label("Удалить также соотв. маршруты:");
-		let and_stops_check = CheckButton::default()
-			.with_pos(180, 45)
-			.with_size(60, 30);
+		// let and_stops_lbl = Frame::default()
+		// 	.with_pos(45, 45)
+		// 	.with_size(90, 30)
+		// 	.with_label("Удалить также соотв. маршруты:");
+		// let and_stops_check = CheckButton::default()
+		// 	.with_pos(180, 45)
+		// 	.with_size(60, 30);
 
 		let mut enter_btn = Button::default()
 			.with_pos(270, 370)
@@ -302,8 +302,8 @@ pub mod transportstop_view {
 		unsafe {
 			enter_btn.set_callback(move |_|
 				transportstop_controller::prepare_row_del(
-					entry_input.value(),
-					and_stops_check.is_checked()
+					entry_input.value()/*/,
+					and_stops_check.is_checked()*/
 				)
 			);
 		}
