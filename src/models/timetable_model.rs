@@ -84,7 +84,7 @@ pub mod timetable_model {
 		println!("{}", result);
 	}
 
-	pub unsafe fn change_stop(timing: String, new_stop: i32) {
+	pub unsafe fn change_stop(timing: String, new_stop: String) {
 		let checking = get_checking_timing(&timing);
 		let result: &Row;
 		if checking.is_empty() {

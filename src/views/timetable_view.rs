@@ -1,6 +1,6 @@
 pub mod timetable_view {
 	use fltk::{
-		button::Button,
+		button::{ Button, CheckButton },
 		enums::Align,
 		frame::Frame,
 		input::{ Input, IntInput, FloatInput },
@@ -63,7 +63,7 @@ pub mod timetable_view {
 			.with_pos(1000, 80)
 			.with_size(90, 30)
 			.with_label("Работа по выходным:");
-		let wknd_input = IntInput::default()
+		let wknd_input = CheckButton::default()
 			.with_pos(1145, 80)
 			.with_size(60, 30);
 		let mut wknd_btn = Button::default()
@@ -103,7 +103,8 @@ pub mod timetable_view {
 			let mut table = timetable_controller::table();
 
 			trst_btn.set_callback(move |_|
-				timetable_model::change_stop(nmb_input1.value(), trst_input.value().parse().unwrap())
+				timetable_model::change_stop(nmb_input1.value(),
+				trst_input.value().parse().unwrap())
 			);
 
 			root_btn.set_callback(move |_|
@@ -111,7 +112,7 @@ pub mod timetable_view {
 			);
 
 			wknd_btn.set_callback(move |_|
-				timetable_model::change_stop(nmb_input3.value(), wknd_input.value().parse().unwrap())
+				timetable_model::change_stop(nmb_input3.value(), wknd_input.value().to_string())
 			);
 
 			price_btn.set_callback(move |_|

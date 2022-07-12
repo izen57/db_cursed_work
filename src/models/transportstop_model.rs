@@ -167,7 +167,7 @@ pub mod transportstop_model {
 		println!("{}", result);
 	}
 
-	pub unsafe fn change_request(id: i32, new_request: bool) {
+	pub unsafe fn change_request(id: i32, new_request: String) {
 		let checking = get_checking_root(id);
 		let result: &Row;
 		if checking.is_empty() {

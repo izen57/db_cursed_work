@@ -63,7 +63,7 @@ pub mod transportstop_view {
 			.with_pos(1000, 80)
 			.with_size(90, 30)
 			.with_label("По требованию:");
-		let stop_input = IntInput::default()
+		let stop_input = CheckButton::default()
 			.with_pos(1145, 80)
 			.with_size(60, 30);
 		let mut stop_btn = Button::default()
@@ -100,8 +100,8 @@ pub mod transportstop_view {
 		let elec_lbl = Frame::default()
 			.with_pos(1000, 150)
 			.with_size(90, 30)
-			.with_label("Контактный провод (0 или 1):");
-		let elec_input = IntInput::default()
+			.with_label("Контактный провод:");
+		let elec_input = CheckButton::default()
 			.with_pos(1145, 150)
 			.with_size(60, 30);
 		let mut elec_btn = Button::default()
@@ -119,8 +119,8 @@ pub mod transportstop_view {
 		let rails_lbl = Frame::default()
 			.with_pos(1000, 185)
 			.with_size(90, 30)
-			.with_label("Рельсы (0 или 1):");
-		let rails_input = IntInput::default()
+			.with_label("Рельсы:");
+		let rails_input = CheckButton::default()
 			.with_pos(1145, 185)
 			.with_size(60, 30);
 		let mut rails_btn = Button::default()
@@ -149,19 +149,21 @@ pub mod transportstop_view {
 			);
 
 			stop_btn.set_callback(move |_|
-				transportstop_model::change_request(nmb_input3.value().parse().unwrap(), stop_input.value().parse().unwrap())
+				transportstop_model::change_request(nmb_input3.value().parse().unwrap(), stop_input.value().to_string())
 			);
 
 			year_btn.set_callback(move |_|
-				transportstop_model::change_year(nmb_input4.value().parse().unwrap(), year_input.value())
+				transportstop_model::change_year(nmb_input4.value().parse().unwrap(),
+					year_input.value())
 			);
 
 			elec_btn.set_callback(move |_|
-				transportstop_model::change_elec(nmb_input5.value().parse().unwrap(), elec_input.value())
+				transportstop_model::change_elec(nmb_input5.value().parse().unwrap(),
+					elec_input.value().to_string())
 			);
 
 			rails_btn.set_callback(move |_|
-				transportstop_model::change_rails(nmb_input6.value().parse().unwrap(), rails_input.value())
+				transportstop_model::change_rails(nmb_input6.value().parse().unwrap(), rails_input.value().to_string())
 			);
 
 			add_btn.set_callback(&add_window);
