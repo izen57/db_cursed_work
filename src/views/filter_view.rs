@@ -80,7 +80,7 @@ pub mod filter_view {
 		let send_trns_btn = Button::default()
 			.with_pos(100, 275)
 			.with_size(80, 30)
-			.with_label("Отправить");
+			.with_label("Найти");
 
 
 		let mut fare_frame = Frame::default()
@@ -113,7 +113,7 @@ pub mod filter_view {
 		start_fare_choice.add_choice("= | < | > | <= | >=");
 
 		let stop_fare_lbl = Frame::default()
-			.with_pos(300, 90)
+			.with_pos(290, 90)
 			.with_size(80, 30)
 			.with_label("ID конечной остановки:");
 		let stop_fare_input = IntInput::default()
@@ -151,7 +151,7 @@ pub mod filter_view {
 		let send_fare_btn = Button::default()
 			.with_pos(340, 275)
 			.with_size(80, 30)
-			.with_label("Отправить");
+			.with_label("Найти");
 
 
 		let mut trsp_frame = Frame::default()
@@ -226,7 +226,74 @@ pub mod filter_view {
 		let send_trsp_btn = Button::default()
 			.with_pos(100, 620)
 			.with_size(80, 30)
-			.with_label("Отправить");
+			.with_label("Найти");
+
+
+		let mut tmt_frame = Frame::default()
+			.with_pos(250, 320)
+			.with_size(231, 301);
+		tmt_frame.set_frame(FrameType::UpBox);
+
+		let nmb_tmt_lbl = Frame::default()
+			.with_pos(277, 320)
+			.with_size(80, 30)
+			.with_label("Номер маршрута:");
+		let nmb_tmt_input = IntInput::default()
+			.with_pos(260, 345)
+			.with_size(60, 20);
+		let mut nmb_tmt_choice = Choice::default()
+			.with_pos(330, 345)
+			.with_size(60, 20);
+		nmb_tmt_choice.add_choice("= | < | > | <= | >=");
+
+		let time_lbl = Frame::default()
+			.with_pos(300, 360)
+			.with_size(80, 30)
+			.with_label("Время прибытия (ЧЧ:ММ):");
+		let time_input = Input::default()
+			.with_pos(260, 385)
+			.with_size(60, 20);
+		let mut time_choice = Choice::default()
+			.with_pos(330, 385)
+			.with_size(60, 20);
+		time_choice.add_choice("= | < | > | <= | >=");
+
+		let stopid_lbl = Frame::default()
+			.with_pos(265, 400)
+			.with_size(80, 30)
+			.with_label("ID остановки:");
+		let stopid_input = IntInput::default()
+			.with_pos(260, 425)
+			.with_size(60, 20);
+		let mut stopid_choice = Choice::default()
+			.with_pos(330, 425)
+			.with_size(60, 20);
+		stopid_choice.add_choice("= | < | > | <= | >=");
+
+		let price_lbl = Frame::default()
+			.with_pos(315, 440)
+			.with_size(80, 30)
+			.with_label("Максимальная цена за проезд:");
+		let price_input = FloatInput::default()
+			.with_pos(260, 465)
+			.with_size(60, 20);
+		let mut price_choice = Choice::default()
+			.with_pos(330, 465)
+			.with_size(60, 20);
+		price_choice.add_choice("= | < | > | <= | >=");
+
+		let wknd_lbl = Frame::default()
+			.with_pos(285, 480)
+			.with_size(80, 30)
+			.with_label("Ходит по выходным:");
+		let wknd_input = CheckButton::default()
+			.with_pos(260, 500)
+			.with_size(60, 20);
+
+		let send_tmt_btn = Button::default()
+			.with_pos(340, 525)
+			.with_size(80, 30)
+			.with_label("Найти");
 
 		filter_window.end();
 		filter_window.show();
