@@ -80,7 +80,7 @@ pub mod transport_model {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-			println!("{}", result);
+		println!("{}", result);
 	}
 
 	pub unsafe fn change_stop(root_number: i32, new_stop: i32) {
