@@ -6,20 +6,50 @@ pub mod filter_model {
 	use crate::models::client::*;
 
 	pub unsafe fn trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
-		let query_string = "select * from transport";
+		let mut query_string: String = "select * from transport where ".to_string();
+		let mut flag = false;
+		let (root_value, root_sign) = root;
+		let (start_value, start_sign) = start_id;
+		let (stop_value, stop_sign) = stop_id;
+		let (date_value, date_sign) = date;
 
-		roles::U.get_valid().query(&format!(
-			"select * from transport where
-			root_number $0 $1 and
-			start_id $2 $3 and
-			stop_id $4 $5 and
-			transport_type = $6 and
-			entry_date $7 $8"
-		), &[
-			&root.1, &root.0, &start_id.1,
-			&start_id.0, &stop_id.1, &stop_id.0,
-			&trnstype, &date.1, &date.0
-		]).unwrap_or_else(|error| {
+		if !root_value.is_empty() {
+			query_string += "root_number {root_sign} {root_value} ";
+			flag = true;
+		}
+		if !start_value.is_empty() {
+			if flag {
+				query_string += "and ";
+			}
+			query_string += "start_id {start_sign} {start_value} ";
+			flag = true;
+		}
+		if !stop_value.is_empty() {
+			if flag {
+				query_string += "and ";
+			}
+			query_string += "stop_id {stop_sign} {stop_value} ";
+			flag = true;
+		}
+		if !trnstype.is_empty() {
+			if flag {
+				query_string += "and ";
+			}
+			query_string += "transport_type = {trnstype} ";
+			flag = true;
+		}
+		if !date_value.is_empty() {
+			if flag {
+				query_string += "and ";
+			}
+			query_string += "entry_date {date_sign} {date_value} ";
+			flag = true;
+		}
+		if !flag {
+			query_string = "select * from transport".to_string();
+		}
+
+		roles::U.get_valid().query(&query_string, &[]).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			Vec::new()
 		})
