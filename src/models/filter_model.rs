@@ -6,7 +6,7 @@ pub mod filter_model {
 	use crate::models::client::*;
 
 	pub unsafe fn trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
-		let mut query_string: String = "select * from transport where ".to_string();
+		let mut query_string: String = format!("select * from transport where ").to_string();
 		let mut flag = false;
 		let (root_value, root_sign) = root;
 		let (start_value, start_sign) = start_id;
@@ -14,35 +14,35 @@ pub mod filter_model {
 		let (date_value, date_sign) = date;
 
 		if !root_value.is_empty() {
-			query_string += "root_number {root_sign} {root_value} ";
+			query_string += &format!("root_number {root_sign} {root_value} ");
 			flag = true;
 		}
 		if !start_value.is_empty() {
 			if flag {
 				query_string += "and ";
 			}
-			query_string += "start_id {start_sign} {start_value} ";
+			query_string += &format!("start_id {start_sign} {start_value} ");
 			flag = true;
 		}
 		if !stop_value.is_empty() {
 			if flag {
 				query_string += "and ";
 			}
-			query_string += "stop_id {stop_sign} {stop_value} ";
+			query_string += &format!("stop_id {stop_sign} {stop_value} ");
 			flag = true;
 		}
 		if !trnstype.is_empty() {
 			if flag {
 				query_string += "and ";
 			}
-			query_string += "transport_type = {trnstype} ";
+			query_string += &format!("transport_type = {trnstype} ");
 			flag = true;
 		}
 		if !date_value.is_empty() {
 			if flag {
 				query_string += "and ";
 			}
-			query_string += "entry_date {date_sign} {date_value} ";
+			query_string += &format!("entry_date {date_sign} {date_value} ");
 			flag = true;
 		}
 		if !flag {

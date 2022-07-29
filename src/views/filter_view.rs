@@ -2,6 +2,7 @@ pub mod filter_view {
 	use chrono::{NaiveDate, NaiveTime};
 	use fltk::{
 		button::{ Button, CheckButton },
+		dialog::alert_default,
 		enums::{ Align, Color, FrameType },
 		frame::Frame,
 		group::Group,
@@ -35,7 +36,7 @@ pub mod filter_view {
 		let mut nmb_trns_choice = Choice::default()
 			.with_pos(90, 35)
 			.with_size(60, 20);
-		nmb_trns_choice.add_choice("= | < | > | <= | >=");
+		nmb_trns_choice.add_choice("=|<|>|<=|>=");
 		nmb_trns_choice.set_value(0);
 
 		let start_trns_lbl = Frame::default()
@@ -48,7 +49,7 @@ pub mod filter_view {
 		let mut start_trns_choice = Choice::default()
 			.with_pos(90, 75)
 			.with_size(60, 20);
-		start_trns_choice.add_choice("= | < | > | <= | >=");
+		start_trns_choice.add_choice("=|<|>|<=|>=");
 		start_trns_choice.set_value(0);
 
 		let stop_trns_lbl = Frame::default()
@@ -61,7 +62,7 @@ pub mod filter_view {
 		let mut stop_trns_choice = Choice::default()
 			.with_pos(90, 115)
 			.with_size(60, 20);
-		stop_trns_choice.add_choice("= | < | > | <= | >=");
+		stop_trns_choice.add_choice("=|<|>|<=|>=");
 		stop_trns_choice.set_value(0);
 
 		let type_lbl = Frame::default()
@@ -82,7 +83,7 @@ pub mod filter_view {
 		let mut date_choice = Choice::default()
 			.with_pos(90, 213)
 			.with_size(60, 20);
-		date_choice.add_choice("= | < | > | <= | >=");
+		date_choice.add_choice("=|<|>|<=|>=");
 		date_choice.set_value(0);
 
 		let mut send_trns_btn = Button::default()
@@ -113,7 +114,7 @@ pub mod filter_view {
 		let mut nmb_fare_choice = Choice::default()
 			.with_pos(330, 35)
 			.with_size(60, 20);
-		nmb_fare_choice.add_choice("= | < | > | <= | >=");
+		nmb_fare_choice.add_choice("=|<|>|<=|>=");
 		nmb_fare_choice.set_value(0);
 
 		let start_fare_lbl = Frame::default()
@@ -126,7 +127,7 @@ pub mod filter_view {
 		let mut start_fare_choice = Choice::default()
 			.with_pos(330, 75)
 			.with_size(60, 20);
-		start_fare_choice.add_choice("= | < | > | <= | >=");
+		start_fare_choice.add_choice("=|<|>|<=|>=");
 		start_fare_choice.set_value(0);
 
 		let stop_fare_lbl = Frame::default()
@@ -139,7 +140,7 @@ pub mod filter_view {
 		let mut stop_fare_choice = Choice::default()
 			.with_pos(330, 115)
 			.with_size(60, 20);
-		stop_fare_choice.add_choice("= | < | > | <= | >=");
+		stop_fare_choice.add_choice("=|<|>|<=|>=");
 		stop_fare_choice.set_value(0);
 
 		let price_lbl = Frame::default()
@@ -152,7 +153,7 @@ pub mod filter_view {
 		let mut price_choice = Choice::default()
 			.with_pos(330, 155)
 			.with_size(60, 20);
-		price_choice.add_choice("= | < | > | <= | >=");
+		price_choice.add_choice("=|<|>|<=|>=");
 		price_choice.set_value(0);
 
 		let daytime_lbl = Frame::default()
@@ -165,7 +166,7 @@ pub mod filter_view {
 		let mut daytime_choice = Choice::default()
 			.with_pos(330, 195)
 			.with_size(60, 20);
-		daytime_choice.add_choice("= | < | > | <= | >=");
+		daytime_choice.add_choice("=|<|>|<=|>=");
 		daytime_choice.set_value(0);
 
 		let send_fare_btn = Button::default()
@@ -189,7 +190,7 @@ pub mod filter_view {
 		let mut id_choice = Choice::default()
 			.with_pos(90, 345)
 			.with_size(60, 20);
-		id_choice.add_choice("= | < | > | <= | >=");
+		id_choice.add_choice("=|<|>|<=|>=");
 		id_choice.set_value(0);
 
 		let name_lbl = Frame::default()
@@ -226,7 +227,7 @@ pub mod filter_view {
 		let mut date_choice = Choice::default()
 			.with_pos(90, 520)
 			.with_size(60, 20);
-		date_choice.add_choice("= | < | > | <= | >=");
+		date_choice.add_choice("=|<|>|<=|>=");
 		date_choice.set_value(0);
 
 		let elec_lbl = Frame::default()
@@ -266,7 +267,7 @@ pub mod filter_view {
 		let mut nmb_tmt_choice = Choice::default()
 			.with_pos(330, 345)
 			.with_size(60, 20);
-		nmb_tmt_choice.add_choice("= | < | > | <= | >=");
+		nmb_tmt_choice.add_choice("=|<|>|<=|>=");
 		nmb_tmt_choice.set_value(0);
 
 		let time_lbl = Frame::default()
@@ -279,7 +280,7 @@ pub mod filter_view {
 		let mut time_choice = Choice::default()
 			.with_pos(330, 385)
 			.with_size(60, 20);
-		time_choice.add_choice("= | < | > | <= | >=");
+		time_choice.add_choice("=|<|>|<=|>=");
 		time_choice.set_value(0);
 
 		let stopid_lbl = Frame::default()
@@ -292,7 +293,7 @@ pub mod filter_view {
 		let mut stopid_choice = Choice::default()
 			.with_pos(330, 425)
 			.with_size(60, 20);
-		stopid_choice.add_choice("= | < | > | <= | >=");
+		stopid_choice.add_choice("=|<|>|<=|>=");
 		stopid_choice.set_value(0);
 
 		let price_lbl = Frame::default()
@@ -305,7 +306,7 @@ pub mod filter_view {
 		let mut price_choice = Choice::default()
 			.with_pos(330, 465)
 			.with_size(60, 20);
-		price_choice.add_choice("= | < | > | <= | >=");
+		price_choice.add_choice("=|<|>|<=|>=");
 		price_choice.set_value(0);
 
 		let wknd_lbl = Frame::default()
@@ -327,44 +328,53 @@ pub mod filter_view {
 
 	fn answer_window(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) {
 		let mut ans_window = Window::default()
-			.with_size(300, 400)
+			.with_size(800, 800)
 			.with_label("Результат");
 
 		let resvec = filter_controller::prepare_trns_query(root, start_id, stop_id, trnstype, date);
+		if resvec.is_empty() {
+			alert_default("Результаты запроса отсутствуют");
+			return;
+		}
+		let rowcount = resvec.len();
+
 		let mut table = SmartTable::default()
 			.with_size(600, 400)
 			.center_of_parent()
 			.with_opts(TableOpts{
-				rows: 10,
-				cols: resvec.len() as i32,
+				rows: rowcount as i32,
+				cols: 5,
 				editable: false,
 				..Default::default()
 			});
 
-			for (row_index, row) in resvec.iter().enumerate() {
-				for (col_index, col) in row.columns().iter().enumerate() {
-					let col_type: String = col.type_().to_string();
+		for (row_index, row) in resvec.iter().enumerate() {
+			for (col_index, col) in row.columns().iter().enumerate() {
+				let col_type: String = col.type_().to_string();
 
-					if col_type == "int4" {
-						let value: i32 = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-					} else if col_type == "text" {
-						let value: &str = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, &value);
-					} else if col_type == "date" {
-						let value: NaiveDate = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-					} else if col_type == "bool" {
-						let value: bool = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, if value { "есть" } else { "нет" });
-					} else if col_type == "time" {
-						let value: NaiveTime = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-					} else if col_type == "float8" {
-						let value: f64 = row.get(col_index);
-						table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-					}
+				if col_type == "int4" {
+					let value: i32 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "text" {
+					let value: &str = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value);
+				} else if col_type == "date" {
+					let value: NaiveDate = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "bool" {
+					let value: bool = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, if value { "есть" } else { "нет" });
+				} else if col_type == "time" {
+					let value: NaiveTime = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "float8" {
+					let value: f64 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
 				}
 			}
+		}
+		
+		ans_window.end();
+		ans_window.show();
 	}
 }
