@@ -90,7 +90,7 @@ pub mod filter_view {
 			.with_pos(100, 275)
 			.with_size(80, 30)
 			.with_label("Найти");
-		send_trns_btn.set_callback(move |_| answer_window(
+		send_trns_btn.set_callback(move |_| answer_trns_window(
 			(nmb_trns_input.value(), nmb_trns_choice.choice().unwrap()),
 			(start_trns_input.value(), start_trns_choice.choice().unwrap()),
 			(stop_trns_input.value(), stop_trns_choice.choice().unwrap()),
@@ -163,22 +163,24 @@ pub mod filter_view {
 		let daytime_input = Input::default()
 			.with_pos(260, 195)
 			.with_size(60, 20);
-		let mut daytime_choice = Choice::default()
-			.with_pos(330, 195)
-			.with_size(60, 20);
-		daytime_choice.add_choice("=|<|>|<=|>=");
-		daytime_choice.set_value(0);
 
-		let send_fare_btn = Button::default()
+		let mut send_fare_btn = Button::default()
 			.with_pos(340, 275)
 			.with_size(80, 30)
 			.with_label("Найти");
+		send_fare_btn.set_callback(move |_| answer_fare_window(
+			(nmb_fare_input.value(), nmb_fare_choice.choice().unwrap()),
+			(start_fare_input.value(), start_fare_choice.choice().unwrap()),
+			(stop_fare_input.value(), stop_fare_choice.choice().unwrap()),
+			(price_input.value(), price_choice.choice().unwrap()),
+			daytime_input.value()
+		));
 
 
-		let mut trsp_frame = Frame::default()
+		let mut trst_frame = Frame::default()
 			.with_pos(10, 320)
 			.with_size(231, 335);
-		trsp_frame.set_frame(FrameType::UpBox);
+		trst_frame.set_frame(FrameType::UpBox);
 
 		let id_lbl = Frame::default()
 			.with_pos(25, 320)
@@ -238,18 +240,27 @@ pub mod filter_view {
 			.with_pos(20, 560)
 			.with_size(80, 20);
 
-		let req_lbl = Frame::default()
+		let rails_lbl = Frame::default()
 			.with_pos(45, 575)
 			.with_size(80, 30)
 			.with_label("Контактный провод:");
-		let req_input = CheckButton::default()
+		let rails_input = CheckButton::default()
 			.with_pos(20, 595)
 			.with_size(80, 20);
 
-		let send_trsp_btn = Button::default()
+		let mut send_trst_btn = Button::default()
 			.with_pos(100, 620)
 			.with_size(80, 30)
 			.with_label("Найти");
+		send_trst_btn.set_callback(move |_| answer_trst_window(
+			(id_input.value(), id_choice.choice().unwrap()),
+			name_input.value(),
+			adr_input.value(),
+			req_input.value(),
+			(date_input.value(), date_choice.choice().unwrap()),
+			elec_input.value(),
+			rails_input.value()
+		));
 
 
 		let mut tmt_frame = Frame::default()
@@ -317,16 +328,23 @@ pub mod filter_view {
 			.with_pos(260, 500)
 			.with_size(60, 20);
 
-		let send_tmt_btn = Button::default()
+		let mut send_tmt_btn = Button::default()
 			.with_pos(340, 525)
 			.with_size(80, 30)
 			.with_label("Найти");
+		send_tmt_btn.set_callback(move |_| answer_tmt_window(
+			(nmb_tmt_input.value(), nmb_tmt_choice.choice().unwrap()),
+			(time_input.value(), time_choice.choice().unwrap()),
+			(stopid_input.value(), stopid_choice.choice().unwrap()),
+			(price_input.value(), price_choice.choice().unwrap()),
+			wknd_input.value()
+		));
 
 		filter_window.end();
 		filter_window.show();
 	}
 
-	fn answer_window(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) {
+	fn answer_trns_window(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) {
 		let mut ans_window = Window::default()
 			.with_size(800, 800)
 			.with_label("Результат");
@@ -348,6 +366,112 @@ pub mod filter_view {
 				..Default::default()
 			});
 
+		table.set_col_header_value(0, "Номер маршрута");
+		table.set_col_header_value(1, "Ид-р начальной остановки");
+		table.set_col_header_value(2, "Ид-р конечной остановки");
+		table.set_col_header_value(3, "Тип");
+		table.set_col_header_value(4, "Время ввода");
+
+		for (row_index, row) in resvec.iter().enumerate() {
+			for (col_index, col) in row.columns().iter().enumerate() {
+				let col_type: String = col.type_().to_string();
+
+				if col_type == "int4" {
+					let value: i32 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "text" {
+					let value: &str = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value);
+				} else if col_type == "date" {
+					let value: NaiveDate = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				}
+			}
+		}
+
+		ans_window.end();
+		ans_window.show();
+	}
+
+	fn answer_fare_window(root: (String, String), start_id: (String, String), stop_id: (String, String), price: (String, String), daytime: String) {
+		let mut ans_window = Window::default()
+			.with_size(800, 800)
+			.with_label("Результат");
+
+		let resvec = filter_controller::prepare_fare_query(root, start_id, stop_id, price, daytime);
+		if resvec.is_empty() {
+			alert_default("Результаты запроса отсутствуют");
+			return;
+		}
+		let rowcount = resvec.len();
+
+		let mut table = SmartTable::default()
+			.with_size(600, 400)
+			.center_of_parent()
+			.with_opts(TableOpts{
+				rows: rowcount as i32,
+				cols: 5,
+				editable: false,
+				..Default::default()
+			});
+
+			table.set_col_header_value(0, "Номер маршрута");
+			table.set_col_header_value(1, "Цена билета");
+			table.set_col_header_value(2, "Ид-р начальной остановки");
+			table.set_col_header_value(3, "Ид-р конечной остановки");
+			table.set_col_header_value(4, "Время");
+
+		for (row_index, row) in resvec.iter().enumerate() {
+			for (col_index, col) in row.columns().iter().enumerate() {
+				let col_type: String = col.type_().to_string();
+
+				if col_type == "int4" {
+					let value: i32 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "text" {
+					let value: &str = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value);
+				} else if col_type == "float8" {
+					let value: f64 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				}
+			}
+		}
+
+		ans_window.end();
+		ans_window.show();
+	}
+
+	fn answer_trst_window(id: (String, String), name: String, address: String, request: bool, install_year: (String, String), electricity: bool, rails: bool) {
+		let mut ans_window = Window::default()
+			.with_size(800, 800)
+			.with_label("Результат");
+
+		let resvec = filter_controller::prepare_trst_query(id, name, address, request, install_year, electricity, rails);
+		if resvec.is_empty() {
+			alert_default("Результаты запроса отсутствуют");
+			return;
+		}
+		let rowcount = resvec.len();
+
+		let mut table = SmartTable::default()
+			.with_size(600, 400)
+			.center_of_parent()
+			.with_opts(TableOpts{
+				rows: rowcount as i32,
+				cols: 7,
+				editable: false,
+				..Default::default()
+			});
+
+		table.set_col_header_value(0, "Ид-р остановки");
+		table.set_col_header_value(1, "Название");
+		table.set_col_header_value(2, "Адрес");
+		table.set_col_header_value(3, "По требованию");
+		table.set_col_header_value(4, "Год установки");
+		table.set_col_header_value(5, "Контактный провод");
+		table.set_col_header_value(6, "Рельсы");
+
 		for (row_index, row) in resvec.iter().enumerate() {
 			for (col_index, col) in row.columns().iter().enumerate() {
 				let col_type: String = col.type_().to_string();
@@ -364,6 +488,52 @@ pub mod filter_view {
 				} else if col_type == "bool" {
 					let value: bool = row.get(col_index);
 					table.set_cell_value(row_index as i32, col_index as i32, if value { "есть" } else { "нет" });
+				}
+			}
+		}
+
+		ans_window.end();
+		ans_window.show();
+	}
+
+	fn answer_tmt_window(root: (String, String), time: (String, String), stop_id: (String, String), price: (String, String), weekends: bool) {
+		let mut ans_window = Window::default()
+			.with_size(800, 800)
+			.with_label("Результат");
+
+		let resvec = filter_controller::prepare_tmt_query(root, time, stop_id, price, weekends);
+		if resvec.is_empty() {
+			alert_default("Результаты запроса отсутствуют");
+			return;
+		}
+		let rowcount = resvec.len();
+
+		let mut table = SmartTable::default()
+			.with_size(600, 400)
+			.center_of_parent()
+			.with_opts(TableOpts{
+				rows: rowcount as i32,
+				cols: 5,
+				editable: false,
+				..Default::default()
+			});
+
+		table.set_col_header_value(0, "Время прибытия");
+		table.set_col_header_value(1, "Ид-р остановки");
+		table.set_col_header_value(2, "Номер маршрута");
+		table.set_col_header_value(3, "Работа по выходным");
+		table.set_col_header_value(4, "Максимальная цена за проезд");
+
+		for (row_index, row) in resvec.iter().enumerate() {
+			for (col_index, col) in row.columns().iter().enumerate() {
+				let col_type: String = col.type_().to_string();
+
+				if col_type == "int4" {
+					let value: i32 = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
+				} else if col_type == "bool" {
+					let value: bool = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, if value { "есть" } else { "нет" });
 				} else if col_type == "time" {
 					let value: NaiveTime = row.get(col_index);
 					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
@@ -373,7 +543,7 @@ pub mod filter_view {
 				}
 			}
 		}
-		
+
 		ans_window.end();
 		ans_window.show();
 	}
