@@ -3,7 +3,7 @@ pub mod transportstop_controller {
 	use fltk_table::*;
 	use chrono::NaiveDate;
 
-	use crate::models::{ transportstop_model::*, client::* };
+	use crate::models::{ transportstop_model::*, client_model::* };
 
 	pub unsafe fn prepare_row_del(root_number: String/*, and_stop: bool*/) {
 		transportstop_model::remove_row(root_number.parse().unwrap()/*, and_stop*/);

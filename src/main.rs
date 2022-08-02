@@ -2,8 +2,10 @@ use fltk::{
 	app::App,
 	button::Button,
 	enums::{ Color, FrameType::BorderFrame },
+	frame::Frame,
 	group::Group,
 	input::Input,
+	menu::Choice,
 	prelude::*,
 	window::Window
 };
@@ -17,17 +19,45 @@ use work::views::{
 	timetable_view::*,
 	filter_view::*
 };
-use work::models::client::*;
+use work::models::client_model::*;
 
 const WIDTH: i32 = 400;
 const HEIGHT: i32 = 700;
 
 fn main() -> Result<(), Error> {
 	let app = App::default();
+	let mut role_window = Window::default()
+		.with_size(500, 500)
+		.center_screen();
+
+	let role_lbl = Frame::default()
+		.with_pos(255, 210)
+		.with_label("Выберите роль:");
+	let mut role_choice = Choice::default()
+		.with_size(100, 30)
+		.with_pos(205, 230);
+	role_choice.add_choice("Пассажир|Диспетчер");
+
+	let mut role_btn = Button::default()
+		.with_size(100, 50)
+		.with_pos(205, 300)
+		.with_label("Выбрать");
+	role_btn.set_callback(move |_|
+		println!("Вы вошли в систему как {}", roles::User::set_role(role_choice.choice().unwrap()))
+		// добавить для диспетчера ввод по паролю
+	);
+
+	role_window.end();
+	role_window.show();
+	app.run().unwrap();
+
+	Ok(())
+}
+
+fn menu_window() {
 	let mut main_window = Window::default()
 		.with_size(WIDTH, HEIGHT)
 		.center_screen();
-	unsafe { roles::U = roles::User::set_passenger(); }
 
 	let mut fare = Button::default()
 		.with_size(180, 50)
@@ -61,7 +91,4 @@ fn main() -> Result<(), Error> {
 
 	main_window.end();
 	main_window.show();
-	app.run().unwrap();
-
-	Ok(())
 }

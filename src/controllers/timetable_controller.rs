@@ -3,7 +3,7 @@ pub mod timetable_controller {
 	use fltk_table::*;
 	use chrono::NaiveTime;
 
-	use crate::models::{ timetable_model::*, client::* };
+	use crate::models::{ timetable_model::*, client_model::* };
 
 	pub unsafe fn prepare_row_del(timing: String) {
 		timetable_model::remove_row(timing);

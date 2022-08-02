@@ -3,7 +3,7 @@ pub mod filter_model {
 	use fltk::dialog::{ alert, message, alert_default };
 	use postgres::{ Error, Row };
 
-	use crate::models::client::*;
+	use crate::models::client_model::*;
 
 	pub unsafe fn trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
 		let mut query_string: String = format!("select * from transport where ").to_string();

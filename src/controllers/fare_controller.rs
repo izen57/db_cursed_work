@@ -2,7 +2,7 @@ pub mod fare_controller {
 	use fltk::dialog::{ alert_default, message };
 	use fltk_table::*;
 	use postgres::{ Error, Row };
-	use crate::models::{ fare_model::*, client::* };
+	use crate::models::{ fare_model::*, client_model::* };
 
 	fn convert_error() {
 		alert_default("Вводимые данные некорректны!");

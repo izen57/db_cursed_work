@@ -3,7 +3,7 @@ pub mod timetable_model {
 	use postgres::{ Error, Row };
 	use fltk::dialog::{ alert_default, message };
 
-	use crate::models::client::*;
+	use crate::models::client_model::*;
 
 	pub struct Timetable {
 		timing: String,
@@ -35,17 +35,19 @@ pub mod timetable_model {
 			result = checking.get_unchecked(0);
 		}
 
-		let mut result = roles::U.get_valid().execute("update timetable set timing = $1 where timing = $2", &[&new_timing, &timing])
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		let mut result = transaction.execute("update timetable set timing = $1 where timing = $2", &[&new_timing, &timing])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
 		println!("{}", result);
-		result = roles::U.get_valid().execute("update trst_ti set timing = $1 where timing = $2", &[&new_timing, &timing])
+		result = transaction.execute("update trst_ti set timing = $1 where timing = $2", &[&new_timing, &timing])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
+		transaction.commit().unwrap();
 	}
 
 	pub unsafe fn change_wknd(timing: String, new_wknd: String) {
@@ -121,8 +123,10 @@ pub mod timetable_model {
 	}
 
 	pub unsafe fn remove_row(timing: String) {
-		println!("{}", roles::U.get_valid().execute("update trst_ti set timimng = null where timing = $1", &[&timing]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from timetable where timing = $1", &[&timing]).unwrap());
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		println!("{}", transaction.execute("update trst_ti set timimng = null where timing = $1", &[&timing]).unwrap());
+		println!("{}", transaction.execute("delete from timetable where timing = $1", &[&timing]).unwrap());
+		transaction.commit().unwrap();
 		message(10, 10, "Запись удалена!");
 	}
 
@@ -136,23 +140,22 @@ pub mod timetable_model {
 			result = checking.get_unchecked(0);
 		}
 
-		roles::U.get_valid().execute(
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		transaction.execute(
 			"insert into timetable values ($1, $2, $3, $4, $5)",
-			&[&timing, &root, &max_price, &transport_stop_id, &weekends])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
-				0
-			}
-		);
+			&[&timing, &root, &max_price, &transport_stop_id, &weekends]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
+			0
+		});
 
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into trst_ti values ($1, $2) on conflict do nothing",
-			&[&transport_stop_id, &timing])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
-				0
-			}
-		);
+			&[&transport_stop_id, &timing]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
+			0
+		});
 		message(10, 10, "Запись добавлена!");
 	}
 }

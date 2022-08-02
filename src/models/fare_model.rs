@@ -3,7 +3,7 @@ pub mod fare_model {
 	use postgres::{ Error, Row };
 	use fltk::dialog::{ alert_default, message };
 
-	use crate::models::client::*;
+	use crate::models::client_model::{*, self};
 	use crate::controllers::fare_controller::*;
 
 	pub struct Fare {
@@ -126,21 +126,25 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let mut result = roles::U.get_valid().execute("update fare set price = $1 where root_number = $2", &[&new_price, &root_number])
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		let mut result = transaction.execute("update fare set price = $1 where root_number = $2", &[&new_price, &root_number])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 				0
 			});
 		println!("{}", result);
-		result = roles::U.get_valid().execute("update tr_fa set price = $1 where root_number = $2", &[&new_price, &root_number]).unwrap_or_else(|error| {
+		result = transaction.execute("update tr_fa set price = $1 where root_number = $2", &[&new_price, &root_number]).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
+		transaction.commit().unwrap_or_default();
 	}
 
 	pub unsafe fn remove_row(price: f64) {
-		println!("{}", roles::U.get_valid().execute("delete from tr_fa where price = $1", &[&price]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from fare where price = $1", &[&price]).unwrap());
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		println!("{}", transaction.execute("delete from tr_fa where price = $1", &[&price]).unwrap());
+		println!("{}", transaction.execute("delete from fare where price = $1", &[&price]).unwrap());
+		transaction.commit().unwrap_or_default();
 		message(10, 10, "Запись удалена!");
 	}
 
@@ -154,23 +158,23 @@ pub mod fare_model {
 			result = checking.get_unchecked(0);
 		}
 
-		roles::U.get_valid().execute(
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		transaction.execute(
 			"insert into fare values ($1, $2, $3, $4, $5)",
-			&[&root_number, &price, &start_id, &stop_id, &day_time])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			}
-		);
+			&[&root_number, &price, &start_id, &stop_id, &day_time]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			0
+		});
 
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into tr_fa values ($1, $2)",
-			&[&root_number, &price])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			}
-		);
+			&[&root_number, &price]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			0
+		});
+		transaction.commit().unwrap();
 		message(10, 10, "Запись добавлена!");
 	}
 }

@@ -3,7 +3,7 @@ pub mod transportstop_model {
 	use postgres::{ Error, Row };
 	use fltk::dialog::{ alert_default, message };
 
-	use crate::models::client::*;
+	use crate::models::client_model::*;
 
 	pub struct TransportStop {
 		id: i32,
@@ -194,12 +194,14 @@ pub mod transportstop_model {
 	}
 
 	pub unsafe fn remove_row(id: i32/*, and_stop: bool*/) {
-		println!("{}", roles::U.get_valid().execute("update tr_trst set transport_stop_id = null where transport_stop_id = $1", &[&id]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from transport_stop where id = $1", &[&id]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from trst_ti where trst_id = $1", &[&id]).unwrap());
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		println!("{}", transaction.execute("update tr_trst set transport_stop_id = null where transport_stop_id = $1", &[&id]).unwrap());
+		println!("{}", transaction.execute("delete from transport_stop where id = $1", &[&id]).unwrap());
+		println!("{}", transaction.execute("delete from trst_ti where trst_id = $1", &[&id]).unwrap());
 		// if and_stop {
 		// 	println!("{}", roles::U.get_valid().execute("update transport set transport_stop_id = null where root_number = $1", &[&id]).unwrap());
 		// }
+		transaction.commit().unwrap();
 		message(10, 10, "Запись удалена!");
 	}
 
@@ -210,21 +212,22 @@ pub mod transportstop_model {
 			return;
 		}
 
-		roles::U.get_valid().execute(
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		transaction.execute(
 			"insert into transport_stop values ($1, $2, $3, $4, $5, $6, $7)",
 			&[&id, &name, &address, &request_stop, &install_year, &electricity, &rails]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into trst_ti (trst_id) values ($1)",
 			&[&id]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами из-за ошибки: {}", error));
 			0
 		});
-
+		transaction.commit().unwrap();
 		message(10, 10, "Запись добавлена!");
 	}
 

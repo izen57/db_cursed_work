@@ -3,7 +3,7 @@ pub mod transport_model {
 	use postgres::{ Error, Row };
 	use fltk::dialog::{ alert_default, message };
 
-	use crate::models::client::*;
+	use crate::models::client_model::*;
 
 	pub struct Transport {
 		root_number: i32,
@@ -130,8 +130,10 @@ pub mod transport_model {
 	}
 
 	pub unsafe fn remove_row(root_number: i32) {
-		println!("{}", roles::U.get_valid().execute("delete from tr_trst where root_number = $1", &[&root_number]).unwrap());
-		println!("{}", roles::U.get_valid().execute("delete from transport where root_number = $1", &[&root_number]).unwrap());
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		println!("{}", transaction.execute("delete from tr_trst where root_number = $1", &[&root_number]).unwrap());
+		println!("{}", transaction.execute("delete from transport where root_number = $1", &[&root_number]).unwrap());
+		transaction.commit().unwrap();
 		message(10, 10, "Запись удалена!");
 	}
 
@@ -142,35 +144,36 @@ pub mod transport_model {
 			return;
 		}
 
-		roles::U.get_valid().execute(
+		let mut transaction = roles::U.get_valid().transaction().unwrap();
+		transaction.execute(
 			"insert into transport values ($1, $2, $3, $4, $5)",
 			&[&root_number, &start_id, &stop_id, &transport_type, &day_time]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into tr_trst values ($1, $2)",
 			&[&root_number, &start_id]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into tr_trst values ($1, $2)",
 			&[&root_number, &stop_id]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		roles::U.get_valid().execute(
+		transaction.execute(
 			"insert into tr_fa values ($1, $2)",
 			&[&root_number, &price]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-
+		transaction.commit().unwrap();
 		message(10, 10, "Запись добавлена!");
 	}
 
