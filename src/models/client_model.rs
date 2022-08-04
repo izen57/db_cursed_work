@@ -9,22 +9,28 @@ pub mod roles {
 	pub static mut U: User = User::None;
 
 	impl User {
-		pub fn set_passenger() -> Self {
-			Self::Passenger(Client::connect("host=localhost user=Пассажир password=pgadminkoro dbname=test", NoTls).expect("Что-то пошло не так..."))
+		fn set_passenger() -> Self {
+			Self::Passenger(Client::connect(
+				"postgresql://passenger:1111@localhost/test",
+				NoTls
+			).expect("Что-то пошло не так..."))
 		}
 
-		pub fn set_manager() -> Self {
-			Self::Manager(Client::connect("host=localhost user=postgres password=pgadminkoro", NoTls).expect("Что-то пошло не так..."))
+		fn set_manager(password: String) -> Self {
+			Self::Manager(Client::connect(
+				&format!("host=localhost user=postgres password={password} dbname=test"),
+				NoTls
+			).expect("Неправильный пароль."))
 		}
 
-		pub fn set_role(choice: String) -> String {
+		pub unsafe fn set_role(choice: String, password: String) -> String {
 			match choice.get(..) {
 				Some("Пассажир") => {
-					Self::set_passenger();
+					U = Self::set_passenger();
 					"Пассажир".to_string()
 				},
 				Some("Диспетчер") => {
-					Self::set_manager();
+					U = Self::set_manager(password);
 					"Диспетчер".to_string()
 				},
 				Some(_) | None => "Ошибка".to_string()
