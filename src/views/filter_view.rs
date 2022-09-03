@@ -3,9 +3,8 @@ pub mod filter_view {
 	use fltk::{
 		button::{ Button, CheckButton },
 		dialog::alert_default,
-		enums::{ Align, Color, FrameType },
+		enums::FrameType,
 		frame::Frame,
-		group::Group,
 		input::{ Input, FloatInput },
 		menu::Choice,
 		prelude::*,
@@ -15,7 +14,7 @@ pub mod filter_view {
 
 	use crate::controllers::filter_controller::*;
 
-	pub fn filter_window(w: &mut impl WidgetExt) {
+	pub fn filter_window(_w: &mut impl WidgetExt) {
 		let mut filter_window = Window::default()
 			.with_size(800, 800)
 			.with_label("Фильтр");
@@ -26,7 +25,7 @@ pub mod filter_view {
 			.with_size(231, 301);
 		trns_frame.set_frame(FrameType::UpBox);
 
-		let nmb_trns_lbl = Frame::default()
+		let _nmb_trns_lbl = Frame::default()
 			.with_pos(35, 10)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
@@ -39,7 +38,7 @@ pub mod filter_view {
 		nmb_trns_choice.add_choice("=|<|>|<=|>=");
 		nmb_trns_choice.set_value(0);
 
-		let start_trns_lbl = Frame::default()
+		let _start_trns_lbl = Frame::default()
 			.with_pos(57, 50)
 			.with_size(80, 30)
 			.with_label("ID начальной остановки:");
@@ -52,7 +51,7 @@ pub mod filter_view {
 		start_trns_choice.add_choice("=|<|>|<=|>=");
 		start_trns_choice.set_value(0);
 
-		let stop_trns_lbl = Frame::default()
+		let _stop_trns_lbl = Frame::default()
 			.with_pos(53, 90)
 			.with_size(80, 30)
 			.with_label("ID конечной остановки:");
@@ -65,7 +64,7 @@ pub mod filter_view {
 		stop_trns_choice.add_choice("=|<|>|<=|>=");
 		stop_trns_choice.set_value(0);
 
-		let type_lbl = Frame::default()
+		let _type_lbl = Frame::default()
 			.with_pos(30, 130)
 			.with_size(80, 30)
 			.with_label("Тип транспорта:");
@@ -73,7 +72,7 @@ pub mod filter_view {
 			.with_pos(20, 155)
 			.with_size(80, 20);
 
-		let date_lbl = Frame::default()
+		let _date_lbl = Frame::default()
 			.with_pos(60, 163)
 			.with_size(80, 60)
 			.with_label("Дата введения маршрута\n(YYYY-MM-DD):");
@@ -104,7 +103,7 @@ pub mod filter_view {
 			.with_size(231, 301);
 		fare_frame.set_frame(FrameType::UpBox);
 
-		let nmb_fare_lbl = Frame::default()
+		let _nmb_fare_lbl = Frame::default()
 			.with_pos(277, 10)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
@@ -117,7 +116,7 @@ pub mod filter_view {
 		nmb_fare_choice.add_choice("=|<|>|<=|>=");
 		nmb_fare_choice.set_value(0);
 
-		let start_fare_lbl = Frame::default()
+		let _start_fare_lbl = Frame::default()
 			.with_pos(300, 50)
 			.with_size(80, 30)
 			.with_label("ID начальной остановки:");
@@ -130,7 +129,7 @@ pub mod filter_view {
 		start_fare_choice.add_choice("=|<|>|<=|>=");
 		start_fare_choice.set_value(0);
 
-		let stop_fare_lbl = Frame::default()
+		let _stop_fare_lbl = Frame::default()
 			.with_pos(290, 90)
 			.with_size(80, 30)
 			.with_label("ID конечной остановки:");
@@ -143,7 +142,7 @@ pub mod filter_view {
 		stop_fare_choice.add_choice("=|<|>|<=|>=");
 		stop_fare_choice.set_value(0);
 
-		let price_lbl = Frame::default()
+		let _price_lbl = Frame::default()
 			.with_pos(265, 130)
 			.with_size(80, 30)
 			.with_label("Цена билета:");
@@ -156,7 +155,7 @@ pub mod filter_view {
 		price_choice.add_choice("=|<|>|<=|>=");
 		price_choice.set_value(0);
 
-		let daytime_lbl = Frame::default()
+		let _daytime_lbl = Frame::default()
 			.with_pos(265, 170)
 			.with_size(80, 30)
 			.with_label("Время суток:");
@@ -182,7 +181,7 @@ pub mod filter_view {
 			.with_size(231, 335);
 		trst_frame.set_frame(FrameType::UpBox);
 
-		let id_lbl = Frame::default()
+		let _id_lbl = Frame::default()
 			.with_pos(25, 320)
 			.with_size(80, 30)
 			.with_label("ID остановки:");
@@ -195,7 +194,7 @@ pub mod filter_view {
 		id_choice.add_choice("=|<|>|<=|>=");
 		id_choice.set_value(0);
 
-		let name_lbl = Frame::default()
+		let _name_lbl = Frame::default()
 			.with_pos(17, 360)
 			.with_size(80, 30)
 			.with_label("Название:");
@@ -203,7 +202,7 @@ pub mod filter_view {
 			.with_pos(20, 385)
 			.with_size(60, 20);
 
-		let adr_lbl = Frame::default()
+		let _adr_lbl = Frame::default()
 			.with_pos(5, 400)
 			.with_size(80, 30)
 			.with_label("Адрес:");
@@ -211,7 +210,7 @@ pub mod filter_view {
 			.with_pos(20, 425)
 			.with_size(60, 20);
 
-		let req_lbl = Frame::default()
+		let _req_lbl = Frame::default()
 			.with_pos(30, 445)
 			.with_size(80, 30)
 			.with_label("По требованию:");
@@ -219,7 +218,7 @@ pub mod filter_view {
 			.with_pos(20, 465)
 			.with_size(80, 20);
 
-		let date_lbl = Frame::default()
+		let _date_lbl = Frame::default()
 			.with_pos(62, 470)
 			.with_size(80, 60)
 			.with_label("Дата установки остановки\n(YYYY-MM-DD):");
@@ -232,7 +231,7 @@ pub mod filter_view {
 		date_choice.add_choice("=|<|>|<=|>=");
 		date_choice.set_value(0);
 
-		let elec_lbl = Frame::default()
+		let _elec_lbl = Frame::default()
 			.with_pos(10, 540)
 			.with_size(80, 30)
 			.with_label("Рельсы:");
@@ -240,7 +239,7 @@ pub mod filter_view {
 			.with_pos(20, 560)
 			.with_size(80, 20);
 
-		let rails_lbl = Frame::default()
+		let _rails_lbl = Frame::default()
 			.with_pos(45, 575)
 			.with_size(80, 30)
 			.with_label("Контактный провод:");
@@ -268,7 +267,7 @@ pub mod filter_view {
 			.with_size(231, 301);
 		tmt_frame.set_frame(FrameType::UpBox);
 
-		let nmb_tmt_lbl = Frame::default()
+		let _nmb_tmt_lbl = Frame::default()
 			.with_pos(277, 320)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
@@ -281,7 +280,7 @@ pub mod filter_view {
 		nmb_tmt_choice.add_choice("=|<|>|<=|>=");
 		nmb_tmt_choice.set_value(0);
 
-		let time_lbl = Frame::default()
+		let _time_lbl = Frame::default()
 			.with_pos(300, 360)
 			.with_size(80, 30)
 			.with_label("Время прибытия (ЧЧ:ММ):");
@@ -294,7 +293,7 @@ pub mod filter_view {
 		time_choice.add_choice("=|<|>|<=|>=");
 		time_choice.set_value(0);
 
-		let stopid_lbl = Frame::default()
+		let _stopid_lbl = Frame::default()
 			.with_pos(265, 400)
 			.with_size(80, 30)
 			.with_label("ID остановки:");
@@ -307,7 +306,7 @@ pub mod filter_view {
 		stopid_choice.add_choice("=|<|>|<=|>=");
 		stopid_choice.set_value(0);
 
-		let price_lbl = Frame::default()
+		let _price_lbl = Frame::default()
 			.with_pos(315, 440)
 			.with_size(80, 30)
 			.with_label("Максимальная цена за проезд:");
@@ -320,7 +319,7 @@ pub mod filter_view {
 		price_choice.add_choice("=|<|>|<=|>=");
 		price_choice.set_value(0);
 
-		let wknd_lbl = Frame::default()
+		let _wknd_lbl = Frame::default()
 			.with_pos(285, 480)
 			.with_size(80, 30)
 			.with_label("Ходит по выходным:");

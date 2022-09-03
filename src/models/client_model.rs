@@ -1,5 +1,5 @@
 pub mod roles {
-	use postgres::{Client, Error, NoTls};
+	use postgres::{ Client, NoTls };
 
 	pub enum User {
 		None,
@@ -11,16 +11,16 @@ pub mod roles {
 	impl User {
 		fn set_passenger() -> Self {
 			Self::Passenger(Client::connect(
-				"postgresql://passenger:1111@localhost/test",
+				"host=localhost user=operator password=1111 dbname=test",
 				NoTls
 			).expect("Что-то пошло не так..."))
 		}
 
 		fn set_manager(password: String) -> Self {
 			Self::Manager(Client::connect(
-				&format!("host=localhost user=postgres password={password} dbname=test"),
+				&format!("host=localhost user=operator password={password} dbname=test"),
 				NoTls
-			).expect("Неправильный пароль."))
+			).expect("Что-то пошло не так..."))
 		}
 
 		pub unsafe fn set_role(choice: String, password: String) -> String {

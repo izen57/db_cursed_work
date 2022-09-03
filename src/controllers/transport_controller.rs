@@ -1,5 +1,5 @@
 pub mod transport_controller {
-	use fltk::dialog::{ alert, message, alert_default };
+	use fltk::dialog::alert_default;
 	use fltk_table::*;
 	use chrono::NaiveDate;
 
@@ -7,6 +7,16 @@ pub mod transport_controller {
 
 	pub unsafe fn prepare_row_del(root_number: String) {
 		transport_model::remove_row(root_number.parse().unwrap());
+	}
+
+	pub unsafe fn get_transport_types() -> String {
+		let types: String = roles::U.get_valid()
+			.query_one("select enum_range(NULL::trtype)::text", &[])
+			.unwrap_unchecked()
+			.get(0);
+		types.replace("}", "")
+			.replace("{", "")
+			.replace(",", "|")
 	}
 
 	pub unsafe fn prepare_row_crt(root_number: String, price: String, start_id: String, stop_id: String, transport_type: String, entry_date: String, stoplist: String) {
@@ -39,7 +49,7 @@ pub mod transport_controller {
 		);
 	}
 
-	pub unsafe fn table() -> SmartTable {
+	pub unsafe fn table() {
 		let request = roles::U.get_valid().query("select * from transport", &[]).unwrap_or_default();
 		let row_count = request.len();
 
@@ -74,7 +84,5 @@ pub mod transport_controller {
 				}
 			}
 		}
-
-		all_table
 	}
 }

@@ -1,7 +1,6 @@
 pub mod filter_model {
-	use chrono::NaiveDate;
-	use fltk::dialog::{ alert, message, alert_default };
-	use postgres::{ Error, Row };
+	use fltk::dialog::alert_default;
+	use postgres::Row;
 
 	use crate::models::client_model::*;
 

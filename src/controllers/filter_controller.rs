@@ -1,9 +1,9 @@
 pub mod filter_controller {
-	use fltk::dialog::{ alert, message, alert_default };
+	use fltk::dialog::alert_default;
 	use chrono::{NaiveDate, NaiveTime};
-	use postgres::{ Error, Row };
+	use postgres::Row;
 
-	use crate::models::{ filter_model::*, client_model::* };
+	use crate::models::filter_model::*;
 
 	pub fn prepare_trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
 		let mut resdate: String = String::default();

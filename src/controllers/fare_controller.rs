@@ -1,7 +1,6 @@
 pub mod fare_controller {
-	use fltk::dialog::{ alert_default, message };
+	use fltk::dialog::alert_default;
 	use fltk_table::*;
-	use postgres::{ Error, Row };
 	use crate::models::{ fare_model::*, client_model::* };
 
 	fn convert_error() {
@@ -16,15 +15,8 @@ pub mod fare_controller {
 		num_conv
 	}
 
-	pub unsafe fn check_price(str_root: String, str_price: String) {
-		let price_conv: f64 = str_price.parse().unwrap_or_else(|_| {
-			convert_error();
-			-1.0
-		});
-	}
-
-	pub unsafe fn prepare_row_del(price: String) {
-		fare_model::remove_row(price.parse().unwrap());
+	pub unsafe fn prepare_row_del(price: String, root: String) {
+		fare_model::remove_row(price.parse().unwrap(), root.parse().unwrap());
 	}
 
 	pub unsafe fn prepare_row_crt(price: String, root_number: String, start_id: String, stop_id: String, day_time: String) {
@@ -41,7 +33,7 @@ pub mod fare_controller {
 		);
 	}
 
-	pub unsafe fn table() -> SmartTable {
+	pub unsafe fn table() {
 		let request = roles::U.get_valid().query("select * from fare", &[]).unwrap_or_default();
 		let row_count = request.len();
 
@@ -76,7 +68,5 @@ pub mod fare_controller {
 				}
 			}
 		}
-
-		all_table
 	}
 }

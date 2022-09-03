@@ -1,12 +1,16 @@
 pub mod timetable_controller {
-	use fltk::dialog::{ alert, message, alert_default };
+	use fltk::dialog::alert_default;
 	use fltk_table::*;
 	use chrono::NaiveTime;
 
 	use crate::models::{ timetable_model::*, client_model::* };
 
-	pub unsafe fn prepare_row_del(timing: String) {
-		timetable_model::remove_row(timing);
+	pub unsafe fn prepare_row_del(root: String, timing: String, stop_id: String) {
+		timetable_model::remove_row(
+			timing,
+			root.parse().unwrap(),
+			stop_id.parse().unwrap()
+		);
 	}
 
 	pub unsafe fn prepare_row_crt(timing: String, root: String, max_price: String, transport_stop_id: String, weekends: String) {
@@ -33,7 +37,7 @@ pub mod timetable_controller {
 		);
 	}
 
-	pub unsafe fn table() -> SmartTable {
+	pub unsafe fn table() {
 		let request = roles::U.get_valid().query("select * from timetable", &[]).unwrap_or_default();
 		let row_count = request.len();
 
@@ -71,7 +75,5 @@ pub mod timetable_controller {
 				}
 			}
 		}
-
-		all_table
 	}
 }

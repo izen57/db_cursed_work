@@ -1,5 +1,5 @@
 pub mod transportstop_controller {
-	use fltk::dialog::{ alert, message, alert_default };
+	use fltk::dialog::alert_default;
 	use fltk_table::*;
 	use chrono::NaiveDate;
 
@@ -24,9 +24,9 @@ pub mod transportstop_controller {
 		}
 
 		let res = NaiveDate::parse_from_str(&install_year, "%Y");
-		let resdate: NaiveDate;
+		let _resdate: NaiveDate;
 		match res {
-			Ok(success) => resdate = success,
+			Ok(success) => _resdate = success,
 			Err(_) => {
 				alert_default("Не удалось преобразовать год установки.");
 				return
@@ -34,7 +34,6 @@ pub mod transportstop_controller {
 		};
 		transportstop_model::create_row(
 			id.parse().unwrap(),
-			// timing.parse().unwrap(),
 			name,
 			address,
 			request_stop.parse().unwrap(),
@@ -44,7 +43,7 @@ pub mod transportstop_controller {
 		);
 	}
 
-	pub unsafe fn table() -> SmartTable {
+	pub unsafe fn table() {
 		let request = roles::U.get_valid().query("select * from transport_stop", &[]).unwrap_or_default();
 		let row_count = request.len();
 
@@ -84,7 +83,5 @@ pub mod transportstop_controller {
 				}
 			}
 		}
-
-		all_table
 	}
 }

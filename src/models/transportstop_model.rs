@@ -1,35 +1,35 @@
 pub mod transportstop_model {
-	use chrono::{ Date, NaiveDate, prelude::*, Utc };
-	use postgres::{ Error, Row };
+	use chrono::NaiveDate;
+	use postgres::Row;
 	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client_model::*;
 
-	pub struct TransportStop {
-		id: i32,
-		name: String,
-		address: String,
-		request_stop: bool,
-		install_year: String,
-		electricity: bool,
-		rails: bool
-	}
+	// pub struct TransportStop {
+	// 	id: i32,
+	// 	name: String,
+	// 	address: String,
+	// 	request_stop: bool,
+	// 	install_year: String,
+	// 	electricity: bool,
+	// 	rails: bool
+	// }
 	
-	impl TransportStop {
-		const fn new(id: i32, name: String, address: String, request_stop: bool, install_year: String, electricity: bool, rails: bool) -> TransportStop {
-			TransportStop{ id, name, address, request_stop, install_year, electricity, rails }
-		}
-	}
+	// impl TransportStop {
+	// 	const fn new(id: i32, name: String, address: String, request_stop: bool, install_year: String, electricity: bool, rails: bool) -> TransportStop {
+	// 		TransportStop{ id, name, address, request_stop, install_year, electricity, rails }
+	// 	}
+	// }
 
-	pub static mut TRS: TransportStop = TransportStop::new(
-		0,
-		String::new(),
-		String::new(),
-		false,
-		String::new(),
-		false,
-		false
-	);
+	// pub static mut TRS: TransportStop = TransportStop::new(
+	// 	0,
+	// 	String::new(),
+	// 	String::new(),
+	// 	false,
+	// 	String::new(),
+	// 	false,
+	// 	false
+	// );
 
 	unsafe fn get_checking_root(id: i32) -> Vec<Row> {
 		roles::U.get_valid().query("select * from transport_stop where id = $1", &[&id]).unwrap()
@@ -37,12 +37,12 @@ pub mod transportstop_model {
 
 	pub unsafe fn change_year(id: i32, new_year: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		let res = NaiveDate::parse_from_str(&new_year, "%Y-%m-%d");
@@ -55,142 +55,142 @@ pub mod transportstop_model {
 			}
 		};
 
-		let result = roles::U.get_valid().execute("update transport_stop set install_year = $1 where id = $2", &[&resdate, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set install_year = $1 where id = $2", &[&resdate, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-		println!("{}", result);
+		println!("{}", _result);
 	}
 
 	pub unsafe fn change_name(id: i32, new_name: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		// TR = Transport::new(
-		// 	result.get("root_number"),
-		// 	result.get("start_id"),
-		// 	result.get("stop_id"),
-		// 	result.get("transport_type"),
-		// 	result.get("entry_date")
+		// 	_result.get("root_number"),
+		// 	_result.get("start_id"),
+		// 	_result.get("stop_id"),
+		// 	_result.get("transport_type"),
+		// 	_result.get("entry_date")
 		// );
 
-		let result = roles::U.get_valid().execute("update transport_stop set name = $1 where id = $2", &[&new_name, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set name = $1 where id = $2", &[&new_name, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-			println!("{}", result);
+			println!("{}", _result);
 	}
 
 	pub unsafe fn change_address(id: i32, new_address: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		// TR = Transport::new(
-		// 	result.get("root_number"),
-		// 	result.get("start_id"),
-		// 	result.get("stop_id"),
-		// 	result.get("transport_type"),
-		// 	result.get("entry_date")
+		// 	_result.get("root_number"),
+		// 	_result.get("start_id"),
+		// 	_result.get("stop_id"),
+		// 	_result.get("transport_type"),
+		// 	_result.get("entry_date")
 		// );
 
-		let result = roles::U.get_valid().execute("update transport_stop set address = $1 where id = $2", &[&new_address, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set address = $1 where id = $2", &[&new_address, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-		println!("{}", result);
+		println!("{}", _result);
 	}
 
 	pub unsafe fn change_elec(id: i32, new_el: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		// TR = Transport::new(
-		// 	result.get("root_number"),
-		// 	result.get("start_id"),
-		// 	result.get("stop_id"),
-		// 	result.get("transport_type"),
-		// 	result.get("entry_date")
+		// 	_result.get("root_number"),
+		// 	_result.get("start_id"),
+		// 	_result.get("stop_id"),
+		// 	_result.get("transport_type"),
+		// 	_result.get("entry_date")
 		// );
 
-		let result = roles::U.get_valid().execute("update transport_stop set electricity = $1 where id = $2", &[&new_el, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set electricity = $1 where id = $2", &[&new_el, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-		println!("{}", result);
+		println!("{}", _result);
 	}
 
 	pub unsafe fn change_rails(id: i32, new_rails: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		// TR = Transport::new(
-		// 	result.get("root_number"),
-		// 	result.get("start_id"),
-		// 	result.get("stop_id"),
-		// 	result.get("transport_type"),
-		// 	result.get("entry_date")
+		// 	_result.get("root_number"),
+		// 	_result.get("start_id"),
+		// 	_result.get("stop_id"),
+		// 	_result.get("transport_type"),
+		// 	_result.get("entry_date")
 		// );
 
-		let result = roles::U.get_valid().execute("update transport_stop set rails = $1 where id = $2", &[&new_rails, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set rails = $1 where id = $2", &[&new_rails, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-		println!("{}", result);
+		println!("{}", _result);
 	}
 
 	pub unsafe fn change_request(id: i32, new_request: String) {
 		let checking = get_checking_root(id);
-		let result: &Row;
+		let _result: &Row;
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", id));
 			return;
 		} else {
-			result = checking.get_unchecked(0);
+			_result = checking.get_unchecked(0);
 		}
 
 		// TR = Transport::new(
-		// 	result.get("root_number"),
-		// 	result.get("start_id"),
-		// 	result.get("stop_id"),
-		// 	result.get("transport_type"),
-		// 	result.get("entry_date")
+		// 	_result.get("root_number"),
+		// 	_result.get("start_id"),
+		// 	_result.get("stop_id"),
+		// 	_result.get("transport_type"),
+		// 	_result.get("entry_date")
 		// );
 
-		let result = roles::U.get_valid().execute("update transport_stop set request_stop = $1 where id = $2", &[&new_request, &id])
+		let _result = roles::U.get_valid().execute("update transport_stop set request_stop = $1 where id = $2", &[&new_request, &id])
 			.unwrap_or_else(|error| {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-		println!("{}", result);
+		println!("{}", _result);
 	}
 
 	pub unsafe fn remove_row(id: i32/*, and_stop: bool*/) {
@@ -242,7 +242,7 @@ pub mod transportstop_model {
 			roles::U.get_valid().execute(
 				"insert into tr_trst values ($1, $2) on conflict do nothing",
 				&[&root_number, &elem]
-			).unwrap_or_else(|error| {
+			).unwrap_or_else(|_| {
 				alert_default(&format!("Не удалось разделить входящую строку"));
 				0
 			});

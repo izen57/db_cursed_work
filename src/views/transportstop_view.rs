@@ -1,27 +1,26 @@
 pub mod transportstop_view {
 	use fltk::{
 		button::{ Button, CheckButton },
-		enums::Align,
 		frame::Frame,
-		input::{ Input, IntInput, FloatInput },
+		input::{ Input, IntInput },
 		prelude::*,
 		window::Window
 	};
 	use crate::{ controllers::transportstop_controller::*, models::transportstop_model::* };
 
-	pub fn transportstop_window(w: &mut impl WidgetExt) {
+	pub fn transportstop_window(_w: &mut impl WidgetExt) {
 		let mut transport_window = Window::default()
 			.with_size(1500, 600)
 			.with_label("Полный список остановок транспорта");
 
-		let nmb_lbl1 = Frame::default()
+		let _nmb_lbl1 = Frame::default()
 			.with_pos(790, 10)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input1 = IntInput::default()
 			.with_pos(890, 10)
 			.with_size(60, 30);
-		let name_lbl = Frame::default()
+		let _name_lbl = Frame::default()
 			.with_pos(990, 10)
 			.with_size(60, 30)
 			.with_label("Новое название:");
@@ -33,14 +32,14 @@ pub mod transportstop_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl2 = Frame::default()
+		let _nmb_lbl2 = Frame::default()
 			.with_pos(790, 45)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input2 = IntInput::default()
 			.with_pos(890, 45)
 			.with_size(60, 30);
-		let address_lbl = Frame::default()
+		let _address_lbl = Frame::default()
 			.with_pos(1000, 45)
 			.with_size(90, 30)
 			.with_label("Новый адрес:");
@@ -52,14 +51,14 @@ pub mod transportstop_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl3 = Frame::default()
+		let _nmb_lbl3 = Frame::default()
 			.with_pos(790, 80)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input3 = IntInput::default()
 			.with_pos(890, 80)
 			.with_size(60, 30);
-		let stop_lbl = Frame::default()
+		let _stop_lbl = Frame::default()
 			.with_pos(1000, 80)
 			.with_size(90, 30)
 			.with_label("По требованию:");
@@ -71,14 +70,14 @@ pub mod transportstop_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl4 = Frame::default()
+		let _nmb_lbl4 = Frame::default()
 			.with_pos(790, 115)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input4 = IntInput::default()
 			.with_pos(890, 115)
 			.with_size(60, 30);
-		let year_lbl = Frame::default()
+		let _year_lbl = Frame::default()
 			.with_pos(1000, 115)
 			.with_size(90, 30)
 			.with_label("Новый год установки:");
@@ -90,14 +89,14 @@ pub mod transportstop_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl5 = Frame::default()
+		let _nmb_lbl5 = Frame::default()
 			.with_pos(790, 150)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input5 = IntInput::default()
 			.with_pos(890, 150)
 			.with_size(60, 30);
-		let elec_lbl = Frame::default()
+		let _elec_lbl = Frame::default()
 			.with_pos(1000, 150)
 			.with_size(90, 30)
 			.with_label("Контактный провод:");
@@ -109,14 +108,14 @@ pub mod transportstop_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl6= Frame::default()
+		let _nmb_lbl6= Frame::default()
 			.with_pos(790, 185)
 			.with_size(80, 30)
 			.with_label("Идентификатор:");
 		let nmb_input6 = IntInput::default()
 			.with_pos(890, 185)
 			.with_size(60, 30);
-		let rails_lbl = Frame::default()
+		let _rails_lbl = Frame::default()
 			.with_pos(1000, 185)
 			.with_size(90, 30)
 			.with_label("Рельсы:");
@@ -138,7 +137,7 @@ pub mod transportstop_view {
 			.with_label("@1+");
 
 		unsafe {
-			let mut table = transportstop_controller::table();
+			transportstop_controller::table();
 
 			name_btn.set_callback(move |_|
 				transportstop_model::change_name(nmb_input1.value().parse().unwrap(), name_input.value())
@@ -174,12 +173,12 @@ pub mod transportstop_view {
 		transport_window.show();
 	}
 
-	fn add_window(w: &mut impl WidgetExt) {
+	fn add_window(_w: &mut impl WidgetExt) {
 		let mut add_window = Window::default()
 			.with_size(300, 400)
 			.with_label("Новая остановка");
 
-		let nmb_lbl = Frame::default()
+		let _nmb_lbl = Frame::default()
 			.with_pos(45, 10)
 			.with_size(90, 30)
 			.with_label("Идентификатор:");
@@ -195,7 +194,7 @@ pub mod transportstop_view {
 		// 	.with_pos(180, 45)
 		// 	.with_size(60, 30);
 
-		let name_lbl = Frame::default()
+		let _name_lbl = Frame::default()
 			.with_pos(45, 80)
 			.with_size(90, 30)
 			.with_label("Название:");
@@ -203,7 +202,7 @@ pub mod transportstop_view {
 			.with_pos(180, 80)
 			.with_size(60, 30);
 
-		let address_lbl = Frame::default()
+		let _address_lbl = Frame::default()
 			.with_pos(45, 115)
 			.with_size(90, 30)
 			.with_label("Адрес:");
@@ -211,7 +210,7 @@ pub mod transportstop_view {
 			.with_pos(180, 115)
 			.with_size(60, 30);
 
-		let stop_lbl = Frame::default()
+		let _stop_lbl = Frame::default()
 			.with_pos(45, 150)
 			.with_size(90, 30)
 			.with_label("По требованию:");
@@ -219,7 +218,7 @@ pub mod transportstop_view {
 			.with_pos(180, 150)
 			.with_size(60, 30);
 
-		let year_lbl = Frame::default()
+		let _year_lbl = Frame::default()
 			.with_pos(45, 185)
 			.with_size(90, 30)
 			.with_label("Год установки:");
@@ -227,7 +226,7 @@ pub mod transportstop_view {
 			.with_pos(180, 185)
 			.with_size(60, 30);
 		
-		let elec_lbl = Frame::default()
+		let _elec_lbl = Frame::default()
 			.with_pos(45, 220)
 			.with_size(90, 30)
 			.with_label("Контактный провод (0 или 1):");
@@ -235,7 +234,7 @@ pub mod transportstop_view {
 			.with_pos(180, 220)
 			.with_size(60, 30);
 
-		let rails_lbl = Frame::default()
+		let _rails_lbl = Frame::default()
 			.with_pos(45, 255)
 			.with_size(120, 30)
 			.with_label("Рельсы (0 или 1):");
@@ -243,7 +242,7 @@ pub mod transportstop_view {
 			.with_pos(180, 255)
 			.with_size(60, 30);
 
-		let trsp_lbl = Frame::default()
+		let _trsp_lbl = Frame::default()
 			.with_pos(90, 290)
 			.with_size(120, 30)
 			.with_label("Введите через запятую все маршруты, \nкоторые останавливаются на данной остановке:");
@@ -275,12 +274,12 @@ pub mod transportstop_view {
 		add_window.show();
 	}
 
-	fn del_window(w: &mut impl WidgetExt) {
+	fn del_window(_w: &mut impl WidgetExt) {
 		let mut del_window = Window::default()
 			.with_size(300, 400)
 			.with_label("Удалить остановку");
 
-		let entry_lbl = Frame::default()
+		let _entry_lbl = Frame::default()
 			.with_pos(45, 10)
 			.with_size(90, 30)
 			.with_label("Идентификатор:");

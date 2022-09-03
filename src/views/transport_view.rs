@@ -1,27 +1,26 @@
 pub mod transport_view {
 	use fltk::{
 		button::Button,
-		enums::Align,
 		frame::Frame,
 		input::{ Input, IntInput, FloatInput },
 		prelude::*,
-		window::Window
+		window::Window, menu::Choice
 	};
-	use crate::{ controllers::transport_controller::*, models::transport_model::* };
+	use crate::{ controllers::transport_controller::{*, transport_controller::get_transport_types}, models::transport_model::* };
 
-	pub fn transport_window(w: &mut impl WidgetExt) {
+	pub fn transport_window(_w: &mut impl WidgetExt) {
 		let mut transport_window = Window::default()
 			.with_size(1500, 600)
 			.with_label("Полный список транспорта");
 
-		let nmb_lbl1 = Frame::default()
+		let _nmb_lbl1 = Frame::default()
 			.with_pos(790, 10)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
 		let nmb_input1 = IntInput::default()
 			.with_pos(890, 10)
 			.with_size(60, 30);
-		let type_lbl = Frame::default()
+		let _type_lbl = Frame::default()
 			.with_pos(990, 10)
 			.with_size(60, 30)
 			.with_label("Новый тип транспорта:");
@@ -33,14 +32,14 @@ pub mod transport_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl2 = Frame::default()
+		let _nmb_lbl2 = Frame::default()
 			.with_pos(790, 45)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
 		let nmb_input2 = IntInput::default()
 			.with_pos(890, 45)
 			.with_size(60, 30);
-		let start_lbl = Frame::default()
+		let _start_lbl = Frame::default()
 			.with_pos(1000, 45)
 			.with_size(90, 30)
 			.with_label("Новый ид-р нач. остановки:");
@@ -52,14 +51,14 @@ pub mod transport_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl3 = Frame::default()
+		let _nmb_lbl3 = Frame::default()
 			.with_pos(790, 80)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
 		let nmb_input3 = IntInput::default()
 			.with_pos(890, 80)
 			.with_size(60, 30);
-		let stop_lbl = Frame::default()
+		let _stop_lbl = Frame::default()
 			.with_pos(1000, 80)
 			.with_size(90, 30)
 			.with_label("Новый ид-р кон. остановки:");
@@ -71,14 +70,14 @@ pub mod transport_view {
 			.with_size(180, 30)
 			.with_label("Поменять");
 
-		let nmb_lbl4 = Frame::default()
+		let _nmb_lbl4 = Frame::default()
 			.with_pos(790, 115)
 			.with_size(80, 30)
 			.with_label("Номер маршрута:");
 		let nmb_input4 = IntInput::default()
 			.with_pos(890, 115)
 			.with_size(60, 30);
-		let entry_lbl = Frame::default()
+		let _entry_lbl = Frame::default()
 			.with_pos(1000, 115)
 			.with_size(90, 30)
 			.with_label("Новая дата введения:");
@@ -100,7 +99,7 @@ pub mod transport_view {
 			.with_label("@1+");
 
 		unsafe {
-			let mut table = transport_controller::table();
+			transport_controller::table();
 
 			type_btn.set_callback(move |_|
 				transport_model::change_type(nmb_input1.value().parse().unwrap(), type_input.value())
@@ -126,12 +125,12 @@ pub mod transport_view {
 		transport_window.show();
 	}
 
-	fn add_window(w: &mut impl WidgetExt) {
+	fn add_window(_w: &mut impl WidgetExt) {
 		let mut add_window = Window::default()
 			.with_size(300, 400)
 			.with_label("Новый транспорт");
 
-		let nmb_lbl = Frame::default()
+		let _nmb_lbl = Frame::default()
 			.with_pos(45, 10)
 			.with_size(90, 30)
 			.with_label("Номер маршрута:");
@@ -139,7 +138,7 @@ pub mod transport_view {
 			.with_pos(180, 10)
 			.with_size(60, 30);
 
-		let price_lbl = Frame::default()
+		let _price_lbl = Frame::default()
 			.with_pos(45, 45)
 			.with_size(90, 30)
 			.with_label("Цена:");
@@ -147,7 +146,7 @@ pub mod transport_view {
 			.with_pos(180, 45)
 			.with_size(60, 30);
 
-		let entry_lbl = Frame::default()
+		let _entry_lbl = Frame::default()
 			.with_pos(45, 80)
 			.with_size(90, 30)
 			.with_label("Дата введения:");
@@ -155,7 +154,7 @@ pub mod transport_view {
 			.with_pos(180, 80)
 			.with_size(60, 30);
 
-		let start_lbl = Frame::default()
+		let _start_lbl = Frame::default()
 			.with_pos(45, 115)
 			.with_size(90, 30)
 			.with_label("Ид-р нач. остановки:");
@@ -163,7 +162,7 @@ pub mod transport_view {
 			.with_pos(180, 115)
 			.with_size(60, 30);
 
-		let stop_lbl = Frame::default()
+		let _stop_lbl = Frame::default()
 			.with_pos(45, 150)
 			.with_size(90, 30)
 			.with_label("Ид-р кон. остановки:");
@@ -171,15 +170,17 @@ pub mod transport_view {
 			.with_pos(180, 150)
 			.with_size(60, 30);
 		
-		let type_lbl = Frame::default()
+		let _type_lbl = Frame::default()
 			.with_pos(45, 185)
 			.with_size(90, 30)
 			.with_label("Тип:");
-		let type_input = Input::default()
+		let mut type_input = Choice::default()
 			.with_pos(180, 185)
 			.with_size(60, 30);
+		unsafe { type_input.add_choice(&get_transport_types()) };
+		type_input.set_value(0);
 
-		let stops_lbl = Frame::default()
+		let _stops_lbl = Frame::default()
 			.with_pos(90, 220)
 			.with_size(120, 30)
 			.with_label("Введите через запятую все остановки, на\nкоторых останавливается данный маршрут:");
@@ -200,8 +201,8 @@ pub mod transport_view {
 					nmb_input.value(),
 					start_input.value(),
 					stop_input.value(),
-					type_input.value(),
-					stop_input.value()
+					type_input.choice().unwrap(),
+					stops_input.value()
 				)
 			);
 		}
@@ -210,12 +211,12 @@ pub mod transport_view {
 		add_window.show();
 	}
 
-	fn del_window(w: &mut impl WidgetExt) {
+	fn del_window(_w: &mut impl WidgetExt) {
 		let mut del_window = Window::default()
 			.with_size(300, 400)
 			.with_label("Удалить транспорт");
 
-		let entry_lbl = Frame::default()
+		let _entry_lbl = Frame::default()
 			.with_pos(45, 10)
 			.with_size(90, 30)
 			.with_label("Номер маршрута:");

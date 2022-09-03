@@ -1,10 +1,8 @@
 pub mod fare_model {
-	use fltk::prelude::WidgetExt;
-	use postgres::{ Error, Row };
+	use postgres::Row;
 	use fltk::dialog::{ alert_default, message };
 
-	use crate::models::client_model::{*, self};
-	use crate::controllers::fare_controller::*;
+	use crate::models::client_model::*;
 
 	pub struct Fare {
 		price: f64,
@@ -26,15 +24,19 @@ pub mod fare_model {
 		}
 	}
 
-	unsafe fn get_checking_root(root_number: i32) -> Vec<Row> {
-		roles::U.get_valid().query("select * from fare where root_number = $1", &[&root_number]).unwrap()
+	unsafe fn get_checking_root(root_number: i32, price: f64) -> Vec<Row> {
+		roles::U.get_valid().query("select * from fare where root_number = $1 and price = $2", &[&root_number, &price]).unwrap()
 	}
 
-	pub unsafe fn change_daytime(root_number: i32, new_daytime: String) {
-		let checking = get_checking_root(root_number);
+	pub unsafe fn change_daytime(root_number: String, new_daytime: String) {
+		let nmbprice: Vec<&str> = root_number.split_terminator(",").collect();
+		let root: i32 = nmbprice[0].parse().unwrap();
+		let price: f64 = nmbprice[1].parse().unwrap();
+
+		let checking = get_checking_root(root, price);
 		let result: &Row;
 		if checking.is_empty() {
-			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
+			alert_default(&format!("Маршрут с номером {} и ценой {} не зарегистрован.", root_number, price));
 			return;
 		} else {
 			result = checking.get_unchecked(0);
@@ -48,133 +50,131 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let result = roles::U.get_valid().execute("update fare set day_time = $1 where root_number = $2", &[&new_daytime, &root_number])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			});
-		println!("{}", result);
-	}
-
-	pub unsafe fn change_start(root_number: i32, new_start: i32) {
-		let checking = get_checking_root(root_number);
-		let result: &Row;
-		if checking.is_empty() {
-			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
-			return;
-		} else {
-			result = checking.get_unchecked(0);
-		}
-
-		F = Fare::new(
-			result.get("price"),
-			result.get("root_number"),
-			result.get("start_id"),
-			result.get("stop_id"),
-			result.get("day_time")
-		);
-
-		let result = roles::U.get_valid().execute("update fare set start_id = $1 where root_number = $2", &[&new_start, &root_number])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			});
-			println!("{}", result);
-	}
-
-	pub unsafe fn change_stop(root_number: i32, new_stop: i32) {
-		let checking = get_checking_root(root_number);
-		let result: &Row;
-		if checking.is_empty() {
-			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
-			return;
-		} else {
-			result = checking.get_unchecked(0);
-		}
-
-		F = Fare::new(
-			result.get("price"),
-			result.get("root_number"),
-			result.get("start_id"),
-			result.get("stop_id"),
-			result.get("day_time")
-		);
-
-		let result = roles::U.get_valid().execute("update fare set stop_id = $1 where root_number = $2", &[&new_stop, &root_number])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			});
-		println!("{}", result);
-	}
-
-	pub unsafe fn change_price(root_number: i32, new_price: f64) {
-		let checking = get_checking_root(root_number);
-		let result: &Row;
-		if checking.is_empty() {
-			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
-			return;
-		} else {
-			result = checking.get_unchecked(0);
-		}
-
-		F = Fare::new(
-			result.get("price"),
-			result.get("root_number"),
-			result.get("start_id"),
-			result.get("stop_id"),
-			result.get("day_time")
-		);
-
-		let mut transaction = roles::U.get_valid().transaction().unwrap();
-		let mut result = transaction.execute("update fare set price = $1 where root_number = $2", &[&new_price, &root_number])
-			.unwrap_or_else(|error| {
-				alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-				0
-			});
-		println!("{}", result);
-		result = transaction.execute("update tr_fa set price = $1 where root_number = $2", &[&new_price, &root_number]).unwrap_or_else(|error| {
+		let result = roles::U.get_valid().execute("update fare set day_time = $1 where root_number = $2 and price = $3", &[&new_daytime, &root_number, &price]
+		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
-		transaction.commit().unwrap_or_default();
+		println!("{}", result);
 	}
 
-	pub unsafe fn remove_row(price: f64) {
-		let mut transaction = roles::U.get_valid().transaction().unwrap();
-		println!("{}", transaction.execute("delete from tr_fa where price = $1", &[&price]).unwrap());
-		println!("{}", transaction.execute("delete from fare where price = $1", &[&price]).unwrap());
-		transaction.commit().unwrap_or_default();
+	pub unsafe fn change_start(root_number: String, new_start: i32) {
+		let nmbprice: Vec<&str> = root_number.split_terminator(",").collect();
+		let root: i32 = nmbprice[0].parse().unwrap();
+		let price: f64 = nmbprice[1].parse().unwrap();
+
+		let checking = get_checking_root(root, price);
+		let result: &Row;
+		if checking.is_empty() {
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
+			return;
+		} else {
+			result = checking.get_unchecked(0);
+		}
+
+		F = Fare::new(
+			result.get("price"),
+			result.get("root_number"),
+			result.get("start_id"),
+			result.get("stop_id"),
+			result.get("day_time")
+		);
+
+		let result = roles::U.get_valid().execute("update fare set start_id = $1 where root_number = $2 and price = $3", &[&new_start, &root_number, &price]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			0
+		});
+		println!("{}", result);
+	}
+
+	pub unsafe fn change_stop(root_number: String, new_stop: i32) {
+		let nmbprice: Vec<&str> = root_number.split_terminator(",").collect();
+		let root: i32 = nmbprice[0].parse().unwrap();
+		let price: f64 = nmbprice[1].parse().unwrap();
+
+		let checking = get_checking_root(root, price);
+		let result: &Row;
+		if checking.is_empty() {
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
+			return;
+		} else {
+			result = checking.get_unchecked(0);
+		}
+
+		F = Fare::new(
+			result.get("price"),
+			result.get("root_number"),
+			result.get("start_id"),
+			result.get("stop_id"),
+			result.get("day_time")
+		);
+
+		let result = roles::U.get_valid().execute("update fare set stop_id = $1 where root_number = $2 and price = $3", &[&new_stop, &root_number, &price]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			0
+		});
+		println!("{}", result);
+	}
+
+	pub unsafe fn change_price(root_number: String, new_price: f64) {
+		let nmbprice: Vec<&str> = root_number.split_terminator(",").collect();
+		let root: i32 = nmbprice[0].parse().unwrap();
+		let price: f64 = nmbprice[1].parse().unwrap();
+
+		let checking = get_checking_root(root, price);
+		let result: &Row;
+		if checking.is_empty() {
+			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
+			return;
+		} else {
+			result = checking.get_unchecked(0);
+		}
+
+		F = Fare::new(
+			result.get("price"),
+			result.get("root_number"),
+			result.get("start_id"),
+			result.get("stop_id"),
+			result.get("day_time")
+		);
+
+		let result = roles::U.get_valid().execute("update fare set price = $1 where root_number = $2 and price = $3", &[&new_price, &root_number, &price]
+		).unwrap_or_else(|error| {
+			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			0
+		});
+		println!("{}", result);
+	}
+
+	pub unsafe fn remove_row(price: f64, root_number: i32) {
+		println!("{}", roles::U.get_valid().execute("delete from fare where price = $1 and root_number = $2", &[&price, &root_number]).unwrap());
 		message(10, 10, "Запись удалена!");
 	}
 
 	pub unsafe fn create_row(price: f32, root_number: i32, start_id: i32, stop_id: i32, day_time: String) {
-		let checking = get_checking_root(root_number);
-		let result: &Row;
-		if checking.is_empty() {
-			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
-			return;
-		} else {
-			result = checking.get_unchecked(0);
-		}
+		// let nmbprice: Vec<&str> = root_number.split_terminator(",").collect();
+		// let root: i32 = nmbprice[0].parse().unwrap();
+		// let price: f64 = nmbprice[1].parse().unwrap();
 
-		let mut transaction = roles::U.get_valid().transaction().unwrap();
-		transaction.execute(
+		// let checking = get_checking_root(root, price);
+		// let result: &Row;
+		// if checking.is_empty() {
+		// 	alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
+		// 	return;
+		// } else {
+		// 	result = checking.get_unchecked(0);
+		// }
+
+		roles::U.get_valid().execute(
 			"insert into fare values ($1, $2, $3, $4, $5)",
 			&[&root_number, &price, &start_id, &stop_id, &day_time]
 		).unwrap_or_else(|error| {
-			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
+			alert_default(&format!("Не удалось вставить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
 
-		transaction.execute(
-			"insert into tr_fa values ($1, $2)",
-			&[&root_number, &price]
-		).unwrap_or_else(|error| {
-			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
-			0
-		});
-		transaction.commit().unwrap();
 		message(10, 10, "Запись добавлена!");
 	}
 }

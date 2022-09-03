@@ -1,25 +1,25 @@
 pub mod transport_model {
-	use chrono::{ Date, NaiveDate, prelude::*, Utc };
-	use postgres::{ Error, Row };
+	use chrono::NaiveDate;
+	use postgres::Row;
 	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client_model::*;
 
-	pub struct Transport {
-		root_number: i32,
-		start_id: i32,
-		stop_id: i32,
-		transport_type: String,
-		entry_date: String
-	}
+	// pub struct Transport {
+	// 	root_number: i32,
+	// 	start_id: i32,
+	// 	stop_id: i32,
+	// 	transport_type: String,
+	// 	entry_date: String
+	// }
 
-	impl Transport {
-		const fn new(root_number: i32, start_id: i32, stop_id: i32, transport_type: String, entry_date: String) -> Transport {
-			Transport{ root_number, start_id, stop_id, transport_type, entry_date }
-		}
-	}
+	// impl Transport {
+	// 	const fn new(root_number: i32, start_id: i32, stop_id: i32, transport_type: String, entry_date: String) -> Transport {
+	// 		Transport{ root_number, start_id, stop_id, transport_type, entry_date }
+	// 	}
+	// }
 
-	pub static mut TR: Transport = Transport::new(0, 0, 0, String::new(), String::new());
+	// pub static mut TR: Transport = Transport::new(0, 0, 0, String::new(), String::new());
 
 	unsafe fn get_checking_root(root_number: i32) -> Vec<Row> {
 		roles::U.get_valid().query("select * from transport where root_number = $1", &[&root_number]).unwrap()
