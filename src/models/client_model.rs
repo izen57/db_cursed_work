@@ -11,7 +11,7 @@ pub mod roles {
 	impl User {
 		fn set_passenger() -> Self {
 			Self::Passenger(Client::connect(
-				"host=localhost user=operator password=1111 dbname=test",
+				"host=localhost user=passenger password=1111 dbname=test",
 				NoTls
 			).expect("Что-то пошло не так..."))
 		}

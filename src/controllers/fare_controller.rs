@@ -34,7 +34,10 @@ pub mod fare_controller {
 	}
 
 	pub unsafe fn table() {
-		let request = roles::U.get_valid().query("select * from fare", &[]).unwrap_or_default();
+		let request = roles::U.get_valid().query("select * from fare", &[]).unwrap_or_else(|e| {
+				println!("{e}");
+				Vec::new()
+			});
 		let row_count = request.len();
 
 		let mut all_table = SmartTable::default()

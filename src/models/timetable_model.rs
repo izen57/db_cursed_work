@@ -45,6 +45,7 @@ pub mod timetable_model {
 			0
 		});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_wknd(timing: String, new_wknd: String) {
@@ -68,6 +69,7 @@ pub mod timetable_model {
 			0
 		});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_root(timing: String, new_root: i32) {
@@ -91,6 +93,7 @@ pub mod timetable_model {
 			0
 		});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_stop(timing: String, new_stop: String) {
@@ -114,6 +117,7 @@ pub mod timetable_model {
 			0
 		});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_price(timing: String, new_price: f64) {
@@ -137,6 +141,7 @@ pub mod timetable_model {
 			0
 		});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn remove_row(time: String, root: i32, stop_id: i32) {

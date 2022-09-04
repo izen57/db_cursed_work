@@ -50,12 +50,13 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let result = roles::U.get_valid().execute("update fare set day_time = $1 where root_number = $2 and price = $3", &[&new_daytime, &root_number, &price]
+		let result = roles::U.get_valid().execute("update fare set day_time = $1 where root_number = $2 and price = $3", &[&new_daytime, &root, &price]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_start(root_number: String, new_start: i32) {
@@ -80,12 +81,13 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let result = roles::U.get_valid().execute("update fare set start_id = $1 where root_number = $2 and price = $3", &[&new_start, &root_number, &price]
+		let result = roles::U.get_valid().execute("update fare set start_id = $1 where root_number = $2 and price = $3", &[&new_start, &root, &price]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_stop(root_number: String, new_stop: i32) {
@@ -110,12 +112,13 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let result = roles::U.get_valid().execute("update fare set stop_id = $1 where root_number = $2 and price = $3", &[&new_stop, &root_number, &price]
+		let result = roles::U.get_valid().execute("update fare set stop_id = $1 where root_number = $2 and price = $3", &[&new_stop, &root, &price]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_price(root_number: String, new_price: f64) {
@@ -140,12 +143,13 @@ pub mod fare_model {
 			result.get("day_time")
 		);
 
-		let result = roles::U.get_valid().execute("update fare set price = $1 where root_number = $2 and price = $3", &[&new_price, &root_number, &price]
+		let result = roles::U.get_valid().execute("update fare set price = $1 where root_number = $2 and price = $3", &[&new_price, &root, &price]
 		).unwrap_or_else(|error| {
 			alert_default(&format!("Не удалось обновить строку с параметрами ({}, {}, {}, {}, {}) из-за ошибки: {}", F.price, F.root_number, F.start_id, F.stop_id, F.day_time, error));
 			0
 		});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn remove_row(price: f64, root_number: i32) {

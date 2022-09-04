@@ -5,7 +5,7 @@ pub mod filter_controller {
 
 	use crate::models::filter_model::*;
 
-	pub fn prepare_trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
+	pub fn prepare_trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: Option<String>, date: (String, String)) -> Vec<Row> {
 		let mut resdate: String = String::default();
 		if !date.0.is_empty() {
 			let answer = NaiveDate::parse_from_str(&date.0, "%Y-%m-%d");

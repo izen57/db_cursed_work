@@ -4,7 +4,7 @@ pub mod filter_model {
 
 	use crate::models::client_model::*;
 
-	pub unsafe fn trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) -> Vec<Row> {
+	pub unsafe fn trns_query(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: Option<String>, date: (String, String)) -> Vec<Row> {
 		let mut query_string: String = format!("select * from transport where ").to_string();
 		let mut flag = false;
 		let (root_value, root_sign) = root;
@@ -30,12 +30,15 @@ pub mod filter_model {
 			query_string += &format!("stop_id {stop_sign} {stop_value} ");
 			flag = true;
 		}
-		if !trnstype.is_empty() {
-			if flag {
-				query_string += "and ";
-			}
-			query_string += &format!("transport_type = {trnstype} ");
-			flag = true;
+		match trnstype {
+			Some(value) => {
+				if flag {
+					query_string += "and ";
+				}
+				query_string += &format!("transport_type = '{value}' ");
+				flag = true;
+			},
+			None => ()
 		}
 		if !date_value.is_empty() {
 			if flag {

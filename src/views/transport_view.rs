@@ -2,7 +2,7 @@ pub mod transport_view {
 	use fltk::{
 		button::Button,
 		frame::Frame,
-		input::{ Input, IntInput, FloatInput },
+		input::{ Input, IntInput },
 		prelude::*,
 		window::Window, menu::Choice
 	};
@@ -138,54 +138,46 @@ pub mod transport_view {
 			.with_pos(180, 10)
 			.with_size(60, 30);
 
-		let _price_lbl = Frame::default()
-			.with_pos(45, 45)
-			.with_size(90, 30)
-			.with_label("Цена:");
-		let price_input = FloatInput::default()
-			.with_pos(180, 45)
-			.with_size(60, 30);
-
 		let _entry_lbl = Frame::default()
-			.with_pos(45, 80)
+			.with_pos(45, 45)
 			.with_size(90, 30)
 			.with_label("Дата введения:");
 		let entry_input = Input::default()
-			.with_pos(180, 80)
+			.with_pos(180, 45)
 			.with_size(60, 30);
 
 		let _start_lbl = Frame::default()
-			.with_pos(45, 115)
+			.with_pos(45, 80)
 			.with_size(90, 30)
 			.with_label("Ид-р нач. остановки:");
 		let start_input = IntInput::default()
-			.with_pos(180, 115)
+			.with_pos(180, 80)
 			.with_size(60, 30);
 
 		let _stop_lbl = Frame::default()
-			.with_pos(45, 150)
+			.with_pos(45, 115)
 			.with_size(90, 30)
 			.with_label("Ид-р кон. остановки:");
 		let stop_input = IntInput::default()
-			.with_pos(180, 150)
+			.with_pos(180, 115)
 			.with_size(60, 30);
 		
 		let _type_lbl = Frame::default()
-			.with_pos(45, 185)
+			.with_pos(45, 150)
 			.with_size(90, 30)
 			.with_label("Тип:");
 		let mut type_input = Choice::default()
-			.with_pos(180, 185)
+			.with_pos(180, 150)
 			.with_size(60, 30);
 		unsafe { type_input.add_choice(&get_transport_types()) };
 		type_input.set_value(0);
 
 		let _stops_lbl = Frame::default()
-			.with_pos(90, 220)
+			.with_pos(90, 185)
 			.with_size(120, 30)
 			.with_label("Введите через запятую все остановки, на\nкоторых останавливается данный маршрут:");
 		let stops_input = Input::default()
-			.with_pos(90, 255)
+			.with_pos(90, 225)
 			.with_size(120, 30);
 
 		let mut enter_btn = Button::default()
@@ -196,12 +188,11 @@ pub mod transport_view {
 		unsafe {
 			enter_btn.set_callback(move |_|
 				transport_controller::prepare_row_crt(
-					entry_input.value(),
-					price_input.value(),
 					nmb_input.value(),
 					start_input.value(),
 					stop_input.value(),
 					type_input.choice().unwrap(),
+					entry_input.value(),
 					stops_input.value()
 				)
 			);

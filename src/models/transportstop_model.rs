@@ -51,7 +51,7 @@ pub mod transportstop_model {
 			Ok(success) => resdate = success,
 			Err(_) => {
 				alert_default("Не удалось преобразовать дату ввода маршрута.");
-				return
+				return;
 			}
 		};
 
@@ -61,6 +61,7 @@ pub mod transportstop_model {
 				0
 			});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_name(id: i32, new_name: String) {
@@ -86,7 +87,8 @@ pub mod transportstop_model {
 				alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 				0
 			});
-			println!("{}", _result);
+		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_address(id: i32, new_address: String) {
@@ -113,6 +115,7 @@ pub mod transportstop_model {
 				0
 			});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_elec(id: i32, new_el: String) {
@@ -139,6 +142,7 @@ pub mod transportstop_model {
 				0
 			});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_rails(id: i32, new_rails: String) {
@@ -165,6 +169,7 @@ pub mod transportstop_model {
 				0
 			});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_request(id: i32, new_request: String) {
@@ -191,6 +196,7 @@ pub mod transportstop_model {
 				0
 			});
 		println!("{}", _result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn remove_row(id: i32/*, and_stop: bool*/) {

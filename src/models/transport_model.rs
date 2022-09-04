@@ -1,9 +1,33 @@
 pub mod transport_model {
 	use chrono::NaiveDate;
 	use postgres::Row;
+	use postgres_types::{ ToSql, FromSql };
 	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client_model::*;
+
+	#[derive(Debug, ToSql, FromSql)]
+	#[postgres(name = "trtype")]
+	pub enum TrType {
+		#[postgres(name = "автобус")]
+		Bus,
+		#[postgres(name = "троллейбус")]
+		Trolley,
+		#[postgres(name = "электробус")]
+		Electrobus,
+		#[postgres(name = "маршрутка")]
+		Shuttle,
+		#[postgres(name = "трамвай")]
+		Tram
+	}
+
+	impl std::fmt::Display for TrType {
+		fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+			write!(f, "{:?}", self)
+			// or, alternatively:
+			// fmt::Debug::fmt(self, f)
+		}
+	}
 
 	// pub struct Transport {
 	// 	root_number: i32,
@@ -58,6 +82,8 @@ pub mod transport_model {
 				0
 			});
 		println!("{}", result);
+
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_start(root_number: i32, new_start: i32) {
@@ -81,6 +107,7 @@ pub mod transport_model {
 				0
 			});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_stop(root_number: i32, new_stop: i32) {
@@ -104,6 +131,7 @@ pub mod transport_model {
 				0
 			});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn change_type(root_number: i32, new_type: String) {
@@ -127,6 +155,7 @@ pub mod transport_model {
 				0
 			});
 		println!("{}", result);
+		message(10, 10, "Запись обновлена!");
 	}
 
 	pub unsafe fn remove_row(root_number: i32) {
@@ -137,7 +166,7 @@ pub mod transport_model {
 		message(10, 10, "Запись удалена!");
 	}
 
-	pub unsafe fn create_row(root_number: i32, price: f32, start_id: i32, stop_id: i32, transport_type: String, day_time: NaiveDate) {
+	pub unsafe fn create_row(root_number: i32, start_id: i32, stop_id: i32, transport_type: String, day_time: NaiveDate) {
 		let checking = get_checking_root(root_number);
 		if checking.is_empty() {
 			alert_default(&format!("Маршрут с номером {} не зарегистрован.", root_number));
@@ -166,13 +195,13 @@ pub mod transport_model {
 			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
 			0
 		});
-		transaction.execute(
-			"insert into tr_fa values ($1, $2)",
-			&[&root_number, &price]
-		).unwrap_or_else(|error| {
-			alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
-			0
-		});
+		// transaction.execute(
+		// 	"insert into tr_fa values ($1, $2)",
+		// 	&[&root_number, &price]
+		// ).unwrap_or_else(|error| {
+		// 	alert_default(&format!("Не удалось обновить строку из-за ошибки: {}", error));
+		// 	0
+		// });
 		transaction.commit().unwrap();
 		message(10, 10, "Запись добавлена!");
 	}

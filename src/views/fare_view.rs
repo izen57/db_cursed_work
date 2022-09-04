@@ -17,7 +17,7 @@ pub mod fare_view {
 			.with_pos(790, 10)
 			.with_size(80, 60)
 			.with_label("Номер маршрута,\nстоимость:");
-		let nmb_input1 = IntInput::default()
+		let nmb_input1 = Input::default()
 			.with_pos(890, 10)
 			.with_size(60, 30);
 		let _daytime_lbl = Frame::default()
@@ -36,7 +36,7 @@ pub mod fare_view {
 			.with_pos(790, 45)
 			.with_size(80, 60)
 			.with_label("Номер маршрута,\nстоимость:");
-		let nmb_input2 = IntInput::default()
+		let nmb_input2 = Input::default()
 			.with_pos(890, 45)
 			.with_size(60, 30);
 		let _start_lbl = Frame::default()
@@ -55,7 +55,7 @@ pub mod fare_view {
 			.with_pos(790, 80)
 			.with_size(80, 60)
 			.with_label("Номер маршрута,\nстоимость:");
-		let nmb_input3 = IntInput::default()
+		let nmb_input3 = Input::default()
 			.with_pos(890, 80)
 			.with_size(60, 30);
 		let _stop_lbl = Frame::default()
@@ -74,7 +74,7 @@ pub mod fare_view {
 			.with_pos(790, 115)
 			.with_size(80, 60)
 			.with_label("Номер маршрута,\nстоимость:");
-		let nmb_input4 = IntInput::default()
+		let nmb_input4 = Input::default()
 			.with_pos(890, 115)
 			.with_size(60, 30);
 		let _price_lbl = Frame::default()

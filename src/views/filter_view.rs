@@ -13,6 +13,8 @@ pub mod filter_view {
 	use fltk_table::{SmartTable, TableOpts};
 
 	use crate::controllers::filter_controller::*;
+	use crate::controllers::transport_controller::transport_controller::get_transport_types;
+	use crate::models::transport_model::transport_model::TrType;
 
 	pub fn filter_window(_w: &mut impl WidgetExt) {
 		let mut filter_window = Window::default()
@@ -68,9 +70,10 @@ pub mod filter_view {
 			.with_pos(30, 130)
 			.with_size(80, 30)
 			.with_label("Тип транспорта:");
-		let type_input = Input::default()
+		let mut type_choice = Choice::default()
 			.with_pos(20, 155)
 			.with_size(80, 20);
+		unsafe { type_choice.add_choice(&get_transport_types()) };
 
 		let _date_lbl = Frame::default()
 			.with_pos(60, 163)
@@ -93,7 +96,7 @@ pub mod filter_view {
 			(nmb_trns_input.value(), nmb_trns_choice.choice().unwrap()),
 			(start_trns_input.value(), start_trns_choice.choice().unwrap()),
 			(stop_trns_input.value(), stop_trns_choice.choice().unwrap()),
-			type_input.value(),
+			type_choice.choice(),
 			(date_input.value(), date_choice.choice().unwrap())
 		));
 
@@ -343,7 +346,7 @@ pub mod filter_view {
 		filter_window.show();
 	}
 
-	fn answer_trns_window(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: String, date: (String, String)) {
+	fn answer_trns_window(root: (String, String), start_id: (String, String), stop_id: (String, String), trnstype: Option<String>, date: (String, String)) {
 		let mut ans_window = Window::default()
 			.with_size(800, 800)
 			.with_label("Результат");
@@ -378,9 +381,9 @@ pub mod filter_view {
 				if col_type == "int4" {
 					let value: i32 = row.get(col_index);
 					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
-				} else if col_type == "text" {
-					let value: &str = row.get(col_index);
-					table.set_cell_value(row_index as i32, col_index as i32, &value);
+				} else if col_type == "trtype" {
+					let value: TrType = row.get(col_index);
+					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
 				} else if col_type == "date" {
 					let value: NaiveDate = row.get(col_index);
 					table.set_cell_value(row_index as i32, col_index as i32, &value.to_string());
