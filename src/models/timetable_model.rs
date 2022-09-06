@@ -3,6 +3,7 @@ pub mod timetable_model {
 	use fltk::dialog::{ alert_default, message };
 
 	use crate::models::client_model::*;
+	use crate::models::transport_model::transport_model;
 
 	// pub struct Timetable {
 	// 	timing: String,
@@ -159,7 +160,7 @@ pub mod timetable_model {
 		// let time: String = nmbprice[1].parse().unwrap();
 		// let stop_id: i32 = nmbprice[2].parse().unwrap();
 
-		// let checking = get_checking_timing(root, &time, stop_id);
+		// let checking = transport_model::get_checking_root(root);
 		// let _result: &Row;
 		// if checking.is_empty() {
 		// 	alert_default(&format!("Время прибытия {} не зарегистровано.", timing));
