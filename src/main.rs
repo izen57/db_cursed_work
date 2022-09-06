@@ -35,7 +35,7 @@ fn main() -> Result<(), Error> {
 	let mut role_choice = Choice::default()
 		.with_size(100, 30)
 		.with_pos(205, 130);
-	role_choice.add_choice("Пассажир|Диспетчер");
+	role_choice.add_choice("Пассажир|Диспетчер|Администратор");
 	role_choice.set_value(1);
 	role_choice.set_callback({
 		let temp_w = role_window.clone();
@@ -128,6 +128,7 @@ fn menu_window() {
 				println!("p");
 			},
 			roles::User::Manager(_) => println!("m"),
+			roles::User::Admin(_) => println!("a"),
 			roles::User::None => println!("n")
 		}
 	}

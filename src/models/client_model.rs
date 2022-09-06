@@ -4,7 +4,8 @@ pub mod roles {
 	pub enum User {
 		None,
 		Passenger(Client),
-		Manager(Client)
+		Manager(Client),
+		Admin(Client)
 	}
 	pub static mut U: User = User::None;
 
@@ -23,6 +24,13 @@ pub mod roles {
 			).expect("Что-то пошло не так..."))
 		}
 
+		fn set_admin(password: String) -> Self {
+			Self::Admin(Client::connect(
+				&format!("host=localhost user=administrator password={password} dbname=test"),
+				NoTls
+			).expect("Что-то пошло не так..."))
+		}
+
 		pub unsafe fn set_role(choice: String, password: String) -> String {
 			match choice.get(..) {
 				Some("Пассажир") => {
@@ -33,6 +41,10 @@ pub mod roles {
 					U = Self::set_manager(password);
 					"Диспетчер".to_string()
 				},
+				Some("Администратор") => {
+					U = Self::set_admin(password);
+					"Администратор".to_string()
+				},
 				Some(_) | None => "Ошибка".to_string()
 			}
 		}
@@ -41,7 +53,8 @@ pub mod roles {
 			match self {
 				Self::None => panic!("Соединение не установлено"),
 				Self::Passenger(p) => p,
-				Self::Manager(m) => m
+				Self::Manager(m) => m,
+				Self::Admin(a) => a
 			}
 		}
 	}
