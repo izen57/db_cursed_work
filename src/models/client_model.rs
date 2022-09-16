@@ -19,14 +19,14 @@ pub mod roles {
 
 		fn set_manager(password: String) -> Self {
 			Self::Manager(Client::connect(
-				&format!("host=localhost user=operator password={password} dbname=test"),
+				&format!("host=localhost user=operator password={password} dbname=postgres"),
 				NoTls
 			).expect("Что-то пошло не так..."))
 		}
 
 		fn set_admin(password: String) -> Self {
 			Self::Admin(Client::connect(
-				&format!("host=localhost user=administrator password={password} dbname=test"),
+				&format!("host=localhost user=administrator password={password} dbname=postgres"),
 				NoTls
 			).expect("Что-то пошло не так..."))
 		}
